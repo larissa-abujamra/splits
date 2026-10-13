@@ -7,12 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#131418;-webkit-font-smoothing:antialiased}
+body{margin:0;background:#E8E1D5;-webkit-font-smoothing:antialiased}
 a{color:inherit}a:hover{color:oklch(0.82 0.1 75)}
 input,select,button,textarea{font-family:inherit}
 input::placeholder{color:currentColor;opacity:.45}
 input:focus,select:focus{outline:1.5px solid oklch(0.75 0.1 65);outline-offset:1px}
 input[type=number]::-webkit-inner-spin-button{opacity:.35}
+input[type=date]::-webkit-calendar-picker-indicator{margin-left:6px;opacity:.55;cursor:pointer}
+select{-webkit-appearance:none;appearance:none;cursor:pointer;padding-right:32px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A847A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 13px center!important}
 ::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgba(128,128,128,.28);border-radius:10px}::-webkit-scrollbar-track{background:transparent}
 </style>
 </head>
@@ -39,7 +41,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:34px;line-height:1">{{ consistency30 }}<span style="font-size:16px;color:var(--mute)">{{ consistencyUnit }}</span></div>
 <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-top:4px"><sc-for list="{{ spark }}" as="s" hint-placeholder-count="14"><div title="{{ s.title }}" style="flex:1;height:{{ s.h }};min-height:2px;border-radius:2px;background:{{ s.bg }}"></div></sc-for></div>
 </div>
-<button onClick="{{ toggleTheme }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:999px;border:1px solid var(--ctlB);background:var(--ctl);color:var(--fg);font-size:13px;cursor:pointer"><span>Light mode</span><span style="position:relative;width:34px;height:18px;border-radius:999px;background:{{ switchBg }};transition:background .2s"><span style="position:absolute;top:2px;left:{{ knobLeft }};width:14px;height:14px;border-radius:50%;background:{{ knobBg }};transition:left .2s"></span></span></button>
+<button onClick="{{ toggleTheme }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:999px;border:1px solid var(--ctlB);background:var(--ctl);color:var(--fg);font-size:13px;cursor:pointer"><span>Dark mode</span><span style="position:relative;width:34px;height:18px;border-radius:999px;background:{{ switchBg }};transition:background .2s"><span style="position:absolute;top:2px;left:{{ knobLeft }};width:14px;height:14px;border-radius:50%;background:{{ knobBg }};transition:left .2s"></span></span></button>
 </div>
 </aside>
 
@@ -84,14 +86,14 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px">
 <sc-if value="{{ h.isToggle }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;color:var(--mute);white-space:nowrap">{{ h.weekLabel }}</span><button onClick="{{ h.onToggle }}" style="min-width:80px;height:36px;padding:0 14px;white-space:nowrap;border-radius:999px;border:1px solid {{ h.btnBorder }};background:{{ h.btnBg }};color:{{ h.btnFg }};font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">{{ h.btnLabel }}</button></sc-if>
 <sc-if value="{{ h.isSleep }}"><input type="number" step="0.1" min="0" max="16" placeholder="0.0" value="{{ sleepRaw }}" onChange="{{ onSleep }}" style="width:80px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:1px solid {{ h.inBorder }};background:{{ h.inBg }};color:{{ h.inFg }};font-size:15px;font-weight:600;text-align:center"><span style="font-size:12px;color:var(--mute)">hrs</span></sc-if>
-<sc-if value="{{ h.isNet }}"><span style="font-size:12px;color:var(--mute);white-space:nowrap">{{ h.netCount }}</span><button onClick="{{ toggleNetForm }}" style="height:36px;padding:0 14px;white-space:nowrap;border-radius:999px;border:1px solid {{ h.btnBorder }};background:{{ h.btnBg }};color:{{ h.btnFg }};font-size:13px;font-weight:600;cursor:pointer">+ Outreach</button></sc-if>
+<sc-if value="{{ h.isNet }}"><span style="font-size:12px;color:var(--mute);white-space:nowrap">{{ h.weekLabel }}</span><button onClick="{{ toggleNetForm }}" style="height:36px;padding:0 14px;white-space:nowrap;border-radius:999px;border:1px solid {{ h.btnBorder }};background:{{ h.btnBg }};color:{{ h.btnFg }};font-size:13px;font-weight:600;cursor:pointer">+ Call</button></sc-if>
 </div>
 </div>
 <sc-if value="{{ h.showNetForm }}">
 <div style="display:flex;flex-direction:column;gap:8px;padding:4px 12px 12px 70px">
 <sc-for list="{{ outreachToday }}" as="o"><div style="font-size:13px;display:flex;gap:10px"><span style="color:var(--acc)">✓</span><span>{{ o.name }}</span><span style="color:var(--mute)">{{ o.company }}</span></div></sc-for>
 <div style="display:flex;gap:8px"><input placeholder="Contact name" value="{{ netName }}" onChange="{{ onNetName }}" onKeyDown="{{ onNetKey }}" style="flex:1;min-width:0;height:36px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg)"><input placeholder="Company" value="{{ netCo }}" onChange="{{ onNetCo }}" onKeyDown="{{ onNetKey }}" style="flex:1;min-width:0;height:36px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg)"><button onClick="{{ onAddOutreach }}" style="height:36px;padding:0 18px;border-radius:999px;border:0;background:var(--strong);color:var(--onStrong);font-size:13px;font-weight:600;cursor:pointer">Log</button></div>
-<div style="font-size:12px;color:var(--mute)">Saved to Networking as "Reached out".</div>
+<div style="font-size:12px;color:var(--mute)">Saved to Networking as "Chatted". An existing contact with the same name is updated.</div>
 </div>
 </sc-if>
 </sc-for>
@@ -100,22 +102,37 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <div style="flex:1 1 300px;max-width:100%;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-direction:column;overflow:hidden">
 <div style="padding:22px 22px 14px;display:flex;flex-direction:column;gap:14px">
 <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:20px">Tasks</div><div style="font-size:13px;color:var(--mute)">{{ taskDone }} of {{ taskTotal }}</div></div>
-<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ filters }}" as="f" hint-placeholder-count="5"><button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.fg }};font-size:12px;font-weight:500;cursor:pointer"><span style="width:6px;height:6px;border-radius:50%;background:{{ f.color }}"></span>{{ f.label }} <span style="opacity:.6">{{ f.count }}</span></button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ filters }}" as="f" hint-placeholder-count="5"><button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.fg }};font-size:12px;font-weight:500;cursor:pointer"><span style="width:6px;height:6px;border-radius:50%;background:{{ f.color }}"></span>{{ f.label }} <span style="opacity:.6">{{ f.count }}</span></button></sc-for><button onClick="{{ toggleTagEdit }}" title="Edit categories" style="padding:6px 11px;border-radius:999px;border:1px dashed var(--ctlB);background:transparent;color:var(--mute);font-size:12px;font-weight:500;cursor:pointer">{{ tagEditLabel }}</button></div>
+<sc-if value="{{ tagEdit }}">
+<div style="display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:var(--input);border:1px solid var(--line)">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:11px;letter-spacing:.12em;color:var(--mute)">CATEGORIES</div><div style="font-size:11px;color:var(--mute)">Click a dot to change its color</div></div>
+<sc-for list="{{ tagRows }}" as="tg"><div style="display:flex;align-items:center;gap:8px"><button onClick="{{ tg.onColor }}" title="Change color" style="width:18px;height:18px;flex:none;border-radius:50%;border:0;padding:0;background:{{ tg.color }};cursor:pointer"></button><input value="{{ tg.label }}" onChange="{{ tg.onLabel }}" placeholder="Category name" style="flex:1;min-width:0;height:32px;padding:0 12px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--ctl);color:var(--fg)"><span style="font-size:11px;color:var(--mute);white-space:nowrap">{{ tg.count }}</span><button onClick="{{ tg.onDelete }}" title="Delete category" style="border:0;background:none;color:var(--mute);font-size:16px;cursor:pointer;padding:0 2px">×</button></div></sc-for>
+<div style="display:flex;gap:6px"><input placeholder="New category (e.g. Clubs)" value="{{ newTagName }}" onChange="{{ onNewTagName }}" onKeyDown="{{ onNewTagKey }}" style="flex:1;min-width:0;height:32px;padding:0 12px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--ctl);color:var(--fg)"><button onClick="{{ onAddTagCat }}" style="height:32px;padding:0 14px;border-radius:999px;border:0;background:var(--strong);color:var(--onStrong);font-size:12px;font-weight:600;cursor:pointer">Add</button></div>
+</div>
+</sc-if>
 </div>
 <div style="display:flex;flex-direction:column;padding:0 10px">
 <sc-for list="{{ visibleTasks }}" as="t" hint-placeholder-count="3">
+<sc-if value="{{ t.viewing }}">
 <div style="display:flex;align-items:flex-start;gap:12px;padding:11px 12px;border-top:1px solid var(--line)">
 <button onClick="{{ t.onToggle }}" style="width:20px;height:20px;flex:none;border-radius:50%;border:1.5px solid {{ t.boxBorder }};background:{{ t.box }};color:var(--onAcc);font-size:11px;font-weight:700;line-height:1;padding:0;cursor:pointer">{{ t.mark }}</button>
-<div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0"><div style="font-size:14px;color:{{ t.fg }};text-decoration:{{ t.deco }};text-wrap:pretty">{{ t.text }}</div><div style="display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.12em;color:var(--mute)"><span style="width:6px;height:6px;border-radius:50%;background:{{ t.color }}"></span>{{ t.tagLabel }}</div></div>
-<button onClick="{{ t.onRemove }}" title="Delete" style="border:0;background:none;color:var(--mute);font-size:16px;cursor:pointer;padding:0 2px">×</button>
+<div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0"><div onClick="{{ t.onEdit }}" title="Click to edit" style="font-size:14px;color:{{ t.fg }};text-decoration:{{ t.deco }};text-wrap:pretty;cursor:pointer">{{ t.text }}</div><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:10px;letter-spacing:.12em;color:var(--mute)"><sc-if value="{{ t.hasTag }}"><span style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:{{ t.color }}"></span>{{ t.tagLabel }}</span></sc-if><sc-if value="{{ t.hasPrio }}"><span style="color:{{ t.prioColor }};font-weight:700">⚑ {{ t.prioLabel }}</span></sc-if><sc-if value="{{ t.hasDue }}"><span style="color:{{ t.dueColor }};font-size:11px;letter-spacing:.02em">{{ t.dueLabel }}</span></sc-if></div></div>
+<button onClick="{{ t.onEdit }}" title="Edit" style="border:0;background:none;color:var(--mute);font-size:13px;cursor:pointer;padding:0 2px">✎</button><button onClick="{{ t.onRemove }}" title="Delete" style="border:0;background:none;color:var(--mute);font-size:16px;cursor:pointer;padding:0 2px">×</button>
 </div>
+</sc-if>
+<sc-if value="{{ t.editing }}">
+<div style="display:flex;flex-direction:column;gap:6px;padding:12px;margin:4px 0;border-radius:16px;background:var(--rowOn);border:1px solid var(--line)">
+<input value="{{ edText }}" onChange="{{ onEdText }}" onKeyDown="{{ onEdKey }}" placeholder="Task" style="height:36px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg)">
+<div style="display:flex;flex-wrap:wrap;gap:6px"><select value="{{ edTag }}" onChange="{{ onEdTag }}" title="Category" style="flex:1 1 96px;height:32px;padding:0 12px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--select);color:var(--fg);min-width:0"><option data-for="{{ tagOptions }}" data-as="o" value="{{ o.key }}">{{ o.label }}</option></select><select value="{{ edPrio }}" onChange="{{ onEdPrio }}" title="Priority" style="flex:1 1 96px;height:32px;padding:0 12px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--select);color:var(--fg);min-width:0"><option value="">Priority</option><option value="high">High</option><option value="med">Medium</option><option value="low">Low</option></select><input type="date" value="{{ edDue }}" onChange="{{ onEdDue }}" title="Due date" style="flex:1 1 128px;height:32px;padding:0 12px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg);min-width:0"></div>
+<div style="display:flex;gap:6px;justify-content:flex-end"><button onClick="{{ onEdCancel }}" style="height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--ctlB);background:transparent;color:var(--fg);font-size:12px;cursor:pointer">Cancel</button><button onClick="{{ onEdSave }}" style="height:32px;padding:0 16px;border-radius:999px;border:0;background:var(--acc);color:var(--onAcc);font-size:12px;font-weight:600;cursor:pointer">Save</button></div>
+</div>
+</sc-if>
 </sc-for>
 <sc-if value="{{ tasksEmpty }}"><div style="padding:22px 12px;border-top:1px solid var(--line);font-size:13px;color:var(--mute)">Nothing here yet. Add what today needs.</div></sc-if>
 </div>
-<div style="display:flex;gap:6px;padding:14px;margin-top:4px;border-top:1px solid var(--line)">
-<input placeholder="Add a task…" value="{{ newText }}" onChange="{{ onNewText }}" onKeyDown="{{ onNewKey }}" style="flex:1;min-width:0;height:36px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg)">
-<select value="{{ newTag }}" onChange="{{ onNewTag }}" style="height:36px;padding:0 10px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--select);color:var(--fg)"><option value="work">Work</option><option value="school">School</option><option value="personal">Personal</option><option value="other">Other</option></select>
-<button onClick="{{ onAddTask }}" title="Add task" style="width:36px;height:36px;flex:none;border-radius:50%;border:0;background:var(--acc);color:var(--onAcc);font-size:18px;cursor:pointer">+</button>
+<div style="display:flex;flex-direction:column;gap:6px;padding:14px;margin-top:4px;border-top:1px solid var(--line)">
+<div style="display:flex;gap:6px"><input placeholder="Add a task…" value="{{ newText }}" onChange="{{ onNewText }}" onKeyDown="{{ onNewKey }}" style="flex:1;min-width:0;height:36px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg)"><button onClick="{{ onAddTask }}" title="Add task" style="width:36px;height:36px;flex:none;border-radius:50%;border:0;background:var(--acc);color:var(--onAcc);font-size:18px;cursor:pointer">+</button></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><select value="{{ newTag }}" onChange="{{ onNewTag }}" title="Category" style="flex:1 1 96px;height:32px;padding:0 12px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--select);color:var(--fg);min-width:0"><option data-for="{{ tagOptions }}" data-as="o" value="{{ o.key }}">{{ o.label }}</option></select><select value="{{ newPrio }}" onChange="{{ onNewPrio }}" title="Priority" style="flex:1 1 96px;height:32px;padding:0 12px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--select);color:var(--fg);min-width:0"><option value="">Priority</option><option value="high">High</option><option value="med">Medium</option><option value="low">Low</option></select><input type="date" value="{{ newDue }}" onChange="{{ onNewDue }}" title="Due date" style="flex:1 1 128px;height:32px;padding:0 12px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg);min-width:0"></div>
 </div>
 <sc-if value="{{ hasCompleted }}"><button onClick="{{ onClearDone }}" style="margin:0 14px 14px;align-self:flex-start;border:0;background:none;color:var(--mute);font-size:12px;cursor:pointer;padding:0">Clear completed</button></sc-if>
 </div>
@@ -123,9 +140,9 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 </sc-if>
 
 <sc-if value="{{ isTrends }}">
-<header style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:var(--mute)">Last 52 weeks</div><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:38px;letter-spacing:-.01em;line-height:1">Trends</div></header>
+<header style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:var(--mute)">{{ trendsSub }}</div><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:38px;letter-spacing:-.01em;line-height:1">Trends</div></header>
 <div style="padding:22px 24px;border-radius:24px;background:var(--heroBg);border:1px solid var(--heroB);color:var(--heroFg);display:flex;flex-direction:column;gap:16px">
-<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:11px;letter-spacing:.14em;color:var(--heroMute)">SCOREBOARD · CURRENT STREAK / PR</div><div style="font-size:12px;color:var(--heroMute)">Workout counts weeks with 5+ sessions</div></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:11px;letter-spacing:.14em;color:var(--heroMute)">SCOREBOARD · CURRENT STREAK / PR</div><div style="font-size:12px;color:var(--heroMute)">Weekly habits: Workout 5+ sessions · Networking 1+ call</div></div>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px">
 <sc-for list="{{ board }}" as="b" hint-placeholder-count="7">
 <div style="padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:10px">
@@ -146,7 +163,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <polyline points="{{ c.points }}" style="fill:none;stroke:var(--acc);stroke-width:2;stroke-linejoin:round;stroke-linecap:round"></polyline>
 <sc-for list="{{ c.dots }}" as="p"><circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="3.2" style="fill:var(--bg);stroke:var(--acc);stroke-width:2"></circle></sc-for>
 </svg>
-<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mute)"><span>{{ weekAxisStart }}</span><span>{{ c.targetLabel }}</span><span>This week</span></div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mute)"><span>{{ weekAxisStart }}</span><span>{{ c.targetLabel }}</span><span>{{ weekAxisEnd }}</span></div>
 </div>
 </sc-for>
 </div>
@@ -164,7 +181,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <div title="{{ cb.title }}" style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;align-items:center"><div style="font-size:10px;color:var(--mute)">{{ cb.label }}</div><div style="width:100%;height:{{ cb.h }};min-height:3px;border-radius:6px;background:{{ cb.bg }};transition:height .4s"></div></div>
 </sc-for>
 </div>
-<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mute)"><span>{{ consistAxisStart }}</span><span>This week</span></div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mute)"><span>{{ consistAxisStart }}</span><span>{{ consistAxisEnd }}</span></div>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px">
 <sc-for list="{{ heat }}" as="hm" hint-placeholder-count="7">
@@ -173,7 +190,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <div style="overflow-x:auto;padding-bottom:4px">
 <div style="display:inline-flex;flex-direction:column;gap:5px">
 <div style="display:flex;gap:3px"><sc-for list="{{ heatMonths }}" as="m"><div style="width:11px;flex:none;font-size:10px;color:var(--mute);white-space:nowrap;overflow:visible">{{ m.label }}</div></sc-for></div>
-<div style="display:flex;gap:3px"><sc-for list="{{ hm.cols }}" as="col"><div style="display:flex;flex-direction:column;gap:3px"><sc-for list="{{ col.cells }}" as="c"><div title="{{ c.title }}" style="width:11px;height:11px;border-radius:3px;background:{{ c.bg }}"></div></sc-for></div></sc-for></div>
+<div style="display:flex;gap:3px"><sc-for list="{{ hm.cols }}" as="col"><div style="display:flex;flex-direction:column;gap:3px"><sc-for list="{{ col.cells }}" as="c"><div title="{{ c.title }}" style="width:11px;height:11px;border-radius:3px;box-sizing:border-box;background:{{ c.bg }};border:1px solid {{ c.border }}"></div></sc-for></div></sc-for></div>
 </div>
 </div>
 </div>
@@ -184,12 +201,12 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 
 <sc-if value="{{ isNet }}">
 <header style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
-<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:var(--mute)">Every outreach counts toward your Networking streak</div><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:38px;letter-spacing:-.01em;line-height:1">Networking</div></div>
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:var(--mute)">One call a week keeps your Networking streak alive</div><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:38px;letter-spacing:-.01em;line-height:1">Networking</div></div>
 <div style="display:flex;gap:28px">
 <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:30px;line-height:1">{{ netTotal }}</div><div style="font-size:12px;color:var(--mute)">Contacts</div></div>
 <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:30px;line-height:1">{{ netChatted }}</div><div style="font-size:12px;color:var(--mute)">Chatted</div></div>
-<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:30px;line-height:1">{{ netWeek }}</div><div style="font-size:12px;color:var(--mute)">This week</div></div>
-<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:30px;line-height:1;color:var(--acc)">{{ netStreak }}</div><div style="font-size:12px;color:var(--mute)">Day streak</div></div>
+<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:30px;line-height:1">{{ netWeek }}</div><div style="font-size:12px;color:var(--mute)">Calls this week</div></div>
+<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;font-size:30px;line-height:1;color:var(--acc)">{{ netStreak }}</div><div style="font-size:12px;color:var(--mute)">Week streak</div></div>
 </div>
 </header>
 <div style="padding:18px;border-radius:24px;background:var(--heroBg);border:1px solid var(--heroB);display:flex;flex-wrap:wrap;gap:8px;align-items:center">
@@ -213,9 +230,9 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 </sc-if>
 <div style="border-radius:24px;background:var(--card);border:1px solid var(--cardB);overflow-x:auto">
 <div style="min-width:780px">
-<div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 92px 128px minmax(0,2fr) 32px;gap:14px;padding:14px 22px;font-size:11px;letter-spacing:.12em;color:var(--mute);border-bottom:1px solid var(--line)"><div>NAME</div><div>COMPANY</div><div>DATE</div><div>STATUS</div><div>NOTES</div><div></div></div>
+<div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 92px 150px minmax(0,2fr) 32px;gap:14px;padding:14px 22px;font-size:11px;letter-spacing:.12em;color:var(--mute);border-bottom:1px solid var(--line)"><div>NAME</div><div>COMPANY</div><div>DATE</div><div>STATUS</div><div>NOTES</div><div></div></div>
 <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="3">
-<div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 92px 128px minmax(0,2fr) 32px;gap:14px;padding:10px 22px;align-items:center;border-bottom:1px solid var(--line)">
+<div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 92px 150px minmax(0,2fr) 32px;gap:14px;padding:10px 22px;align-items:center;border-bottom:1px solid var(--line)">
 <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><sc-if value="{{ c.linkedin }}"><a href="{{ c.linkedin }}" target="_blank" rel="noopener" title="Open LinkedIn" style="text-decoration:none">{{ c.name }} <span style="font-size:11px;color:var(--mute)">↗</span></a></sc-if><sc-if value="{{ c.noLink }}">{{ c.name }}</sc-if></div><sc-if value="{{ c.role }}"><div style="font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.role }}</div></sc-if></div>
 <div style="font-size:14px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.company }}</div>
 <div style="font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums">{{ c.dateLabel }}</div>
@@ -317,8 +334,13 @@ input[type=number]::-webkit-inner-spin-button{opacity:.35}
 </template>
 <script type="text/x-dc" data-dc-script>
 const KEY='splits.v1';
-const HABITS=[{key:'sleep',name:'Sleep',rule:'≥ 8 hours'},{key:'eat',name:'Eat healthy',rule:'Check'},{key:'spend',name:'No unnecessary spending',rule:'Check'},{key:'net',name:'Networking',rule:'≥ 1 new outreach'},{key:'news',name:'News',rule:'Read or listen'},{key:'reading',name:'Reading',rule:'Check'},{key:'workout',name:'Workout',rule:'5 per week'}];
-const TAGS={work:{label:'Work',color:'oklch(0.7 0.11 250)'},school:{label:'School',color:'oklch(0.7 0.11 155)'},personal:{label:'Personal',color:'oklch(0.7 0.11 340)'},other:{label:'Other',color:'oklch(0.7 0.02 260)'}};
+const HABITS=[{key:'sleep',name:'Sleep',rule:'≥ 8 hours'},{key:'eat',name:'Eat healthy',rule:'Check'},{key:'spend',name:'No unnecessary spending',rule:'Check'},{key:'net',name:'Networking',rule:'1 call per week',weekly:1},{key:'news',name:'News',rule:'Read or listen'},{key:'reading',name:'Reading',rule:'Check'},{key:'workout',name:'Workout',rule:'5 per week',weekly:5}];
+const WK={};HABITS.forEach(h=>{if(h.weekly)WK[h.key]=h.weekly;});
+// A call = a contact marked Chatted, on the day it was marked (older entries fall back to their date)
+const callOf=c=>c.status==='chatted'?(c.callDate||c.date||''):'';
+const PALETTE=['oklch(0.7 0.11 250)','oklch(0.7 0.11 155)','oklch(0.7 0.11 340)','oklch(0.72 0.12 70)','oklch(0.66 0.14 28)','oklch(0.7 0.1 200)','oklch(0.66 0.12 295)','oklch(0.7 0.02 260)'];
+const DEFAULT_TAGS=[{key:'work',label:'Work',color:PALETTE[0]},{key:'school',label:'School',color:PALETTE[1]},{key:'personal',label:'Personal',color:PALETTE[2]},{key:'other',label:'Other',color:PALETTE[7]}];
+const PRIO={high:{label:'High',rank:0,color:'var(--miss)'},med:{label:'Medium',rank:1,color:'var(--acc)'},low:{label:'Low',rank:2,color:'var(--mute)'}};
 const LIGHT={'--bg':'#E8E1D5','--glow1':'#F6F0E6','--glow2':'#DCD2C2','--fg':'#24211D','--mute':'#6E675D','--card':'rgba(255,255,255,.42)','--cardB':'rgba(36,33,29,.07)','--line':'rgba(36,33,29,.08)','--ctl':'rgba(255,255,255,.55)','--ctlB':'rgba(36,33,29,.16)','--input':'rgba(255,255,255,.7)','--select':'#F6F1E9','--track':'rgba(36,33,29,.09)','--heatMiss':'rgba(36,33,29,.28)','--past':'rgba(36,33,29,.72)','--acc':'oklch(0.52 0.1 48)','--onAcc':'#FBF7F0','--miss':'oklch(0.55 0.15 28)','--rowOn':'rgba(255,255,255,.62)','--heroBg':'#24211D','--heroB':'#24211D','--heroFg':'#F3EEE5','--heroMute':'rgba(243,238,229,.62)','--heroAcc':'oklch(0.75 0.1 60)','--heroTrack':'rgba(243,238,229,.12)','--navOnBg':'#24211D','--navOnFg':'#F3EEE5','--navDot':'oklch(0.75 0.1 60)','--strong':'#24211D','--onStrong':'#F3EEE5'};
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -333,11 +355,11 @@ const fmtShort=k=>{const d=parse(k);return MON[d.getMonth()]+' '+d.getDate();};
 const isoWeek=k=>{const d=parse(k);d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return 1+Math.round(((d-w1)/864e5-3+(w1.getDay()+6)%7)/7);};
 const uid=()=>Math.random().toString(36).slice(2,10);
 const pct=v=>Math.round(v*100)+'%';
-const defaults=()=>({logs:{},contacts:[],tasks:[],goals:[{id:'internship',title:'Summer 2027 Internship',due:'Summer 2027',funnel:true,apps:0,interviews:0,offers:0,milestones:[]}],theme:'dark'});
-const load=()=>{let d=defaults();try{const r=localStorage.getItem(KEY);if(r)d={...d,...JSON.parse(r)};}catch(e){}return d;};
+const defaults=()=>({logs:{},contacts:[],tasks:[],tags:DEFAULT_TAGS,goals:[{id:'internship',title:'Summer 2027 Internship',due:'Summer 2027',funnel:true,apps:0,interviews:0,offers:0,milestones:[]}],theme:'light'});
+const load=()=>{let d=defaults();try{const r=localStorage.getItem(KEY);if(r)d={...d,...JSON.parse(r)};}catch(e){}if(!d.themeSet)d.theme='light';return d;};
 const T0=todayKey();
 class Component extends DCLogic {
-  state={data:load(),tab:'today',vd:T0,netName:'',netCo:'',netOpen:false,filter:'all',newText:'',newTag:'school',cName:'',cCo:'',cDate:T0,cStatus:'reached',cNotes:'',cFilter:'all',cSearch:'',impOpen:false,impText:'',impMsg:'',ms:{},gTitle:'',gDue:'',weeksShown:6};
+  state={data:load(),tab:'today',vd:T0,netName:'',netCo:'',netOpen:false,filter:'all',newText:'',newTag:'school',newPrio:'',newDue:'',editTask:null,tagEdit:false,newTagName:'',cName:'',cCo:'',cDate:T0,cStatus:'reached',cNotes:'',cFilter:'all',cSearch:'',impOpen:false,impText:'',impMsg:'',ms:{},gTitle:'',gDue:'',weeksShown:6};
   componentDidMount(){this.syncBody();}
   componentDidUpdate(pp,ps){if(ps.data!==this.state.data){try{localStorage.setItem(KEY,JSON.stringify(this.state.data));}catch(e){}}this.syncBody();}
   syncBody(){const light=this.state.data.theme==='light';document.body.style.background=light?'#E8E1D5':'#131418';document.documentElement.style.colorScheme=light?'light':'dark';}
@@ -345,19 +367,29 @@ class Component extends DCLogic {
   setLog=(k,patch)=>this.upd(d=>({...d,logs:{...d.logs,[k]:{...(d.logs[k]||{}),...patch}}}));
   updGoal=(id,fn)=>this.upd(d=>({...d,goals:d.goals.map(g=>g.id===id?fn(g):g)}));
   updContact=(id,patch)=>this.upd(d=>({...d,contacts:d.contacts.map(c=>c.id===id?{...c,...patch}:c)}));
-  addOutreach=()=>{const {netName,netCo,vd}=this.state;if(!netName.trim())return;const c={id:uid(),ts:Date.now(),name:netName.trim(),company:netCo.trim(),date:vd,status:'reached',notes:''};this.setState(s=>({data:{...s.data,contacts:[...s.data.contacts,c]},netName:'',netCo:''}));};
-  addContact=()=>{const s=this.state;if(!s.cName.trim())return;const c={id:uid(),ts:Date.now(),name:s.cName.trim(),company:s.cCo.trim(),date:s.cDate||todayKey(),status:s.cStatus,notes:s.cNotes.trim()};this.setState(st=>({data:{...st.data,contacts:[...st.data.contacts,c]},cName:'',cCo:'',cNotes:''}));};
+  addOutreach=()=>{const {netName,netCo,vd}=this.state,name=netName.trim(),co=netCo.trim();if(!name)return;
+    const ex=this.state.data.contacts.find(c=>c.name.toLowerCase()===name.toLowerCase()&&(!co||(c.company||'').toLowerCase()===co.toLowerCase()));
+    const contacts=ex?this.state.data.contacts.map(c=>c.id===ex.id?{...c,status:'chatted',callDate:vd}:c):[...this.state.data.contacts,{id:uid(),ts:Date.now(),name,company:co,date:vd,status:'chatted',callDate:vd,notes:''}];
+    this.setState(s=>({data:{...s.data,contacts},netName:'',netCo:''}));};
+  addContact=()=>{const s=this.state;if(!s.cName.trim())return;const c={id:uid(),ts:Date.now(),name:s.cName.trim(),company:s.cCo.trim(),date:s.cDate||todayKey(),status:s.cStatus,callDate:s.cStatus==='chatted'?(s.cDate||todayKey()):null,notes:s.cNotes.trim()};this.setState(st=>({data:{...st.data,contacts:[...st.data.contacts,c]},cName:'',cCo:'',cNotes:''}));};
   importContacts=()=>{const now=Date.now(),seen=new Set(this.state.data.contacts.map(c=>(c.name+'|'+c.company).toLowerCase())),add=[];
     this.state.impText.split(/\r?\n/).forEach(l=>{const r=(l.includes('\t')?l.split('\t'):l.split(/\s{2,}/)).map(x=>x.trim());const [name,company='',role='',link='',,chat='',note='']=r;
       if(!name||/^name$/i.test(name))return;const k=(name+'|'+company).toLowerCase();if(seen.has(k))return;seen.add(k);const sch=/^sched/i.test(chat);
       add.push({id:uid(),ts:now-add.length,name,company,role,linkedin:/^https?:\/\//i.test(link)?link:'',date:'',status:/^yes/i.test(chat)?'chatted':'reached',notes:[sch?'Chat scheduled':'',note].filter(Boolean).join(' · ')});});
     this.setState(s=>({data:{...s.data,contacts:[...s.data.contacts,...add]},impText:'',impMsg:add.length?'Added '+add.length+(add.length===1?' contact.':' contacts.'):'Nothing new to add.'}));};
-  addTask=()=>{const t=this.state.newText.trim();if(!t)return;this.setState(s=>({data:{...s.data,tasks:[...s.data.tasks,{id:uid(),text:t,tag:s.newTag,done:false,created:todayKey()}]},newText:''}));};
+  addTask=()=>{const t=this.state.newText.trim();if(!t)return;this.setState(s=>({data:{...s.data,tasks:[...s.data.tasks,{id:uid(),text:t,tag:s.data.tags.some(g=>g.key===s.newTag)?s.newTag:'',prio:s.newPrio,due:s.newDue,done:false,created:todayKey()}]},newText:'',newPrio:'',newDue:''}));};
+  setEd=patch=>this.setState(s=>({editTask:{...s.editTask,...patch}}));
+  saveEdit=()=>{const e=this.state.editTask;if(!e||!e.text.trim())return;this.setState(s=>({data:{...s.data,tasks:s.data.tasks.map(x=>x.id===e.id?{...x,text:e.text.trim(),tag:e.tag,prio:e.prio,due:e.due}:x)},editTask:null}));};
+  updTag=(k,patch)=>this.upd(d=>({...d,tags:d.tags.map(g=>g.key===k?{...g,...patch}:g)}));
+  delTag=k=>{const d=this.state.data,g=d.tags.find(x=>x.key===k),n=d.tasks.filter(t=>t.tag===k).length;if(n&&!confirm('Delete "'+(g.label||'Untitled')+'"? '+n+(n===1?' task':' tasks')+' will have no category.'))return;
+    this.setState(s=>({data:{...s.data,tags:s.data.tags.filter(x=>x.key!==k),tasks:s.data.tasks.map(t=>t.tag===k?{...t,tag:''}:t)},filter:s.filter===k?'all':s.filter}));};
+  addTagCat=()=>{const l=this.state.newTagName.trim();if(!l)return;const tags=this.state.data.tags,used=tags.map(g=>g.color),color=PALETTE.find(c=>!used.includes(c))||PALETTE[tags.length%PALETTE.length],key=uid();
+    this.setState(s=>({data:{...s.data,tags:[...s.data.tags,{key,label:l,color}]},newTagName:'',newTag:key}));};
   addGoal=()=>{const t=this.state.gTitle.trim();if(!t)return;this.setState(s=>({data:{...s.data,goals:[...s.data.goals,{id:uid(),title:t,due:s.gDue.trim(),funnel:false,milestones:[]}]},gTitle:'',gDue:''}));};
   addMs=id=>{const t=(this.state.ms[id]||'').trim();if(!t)return;this.updGoal(id,g=>({...g,milestones:[...g.milestones,{id:uid(),text:t,done:false}]}));this.setState(s=>({ms:{...s.ms,[id]:''}}));};
   renderVals(){
     const s=this.state,d=s.data,T=todayKey(),vd=s.vd>T?T:s.vd,light=d.theme==='light';
-    const net={};d.contacts.forEach(c=>{if(c.date)net[c.date]=(net[c.date]||0)+1;});
+    const net={};d.contacts.forEach(c=>{const k=callOf(c);if(k)net[k]=(net[k]||0)+1;});
     const logKeys=Object.keys(d.logs).filter(k=>Object.values(d.logs[k]||{}).some(v=>v===true||(typeof v==='string'&&v!=='')));
     const allKeys=[...logKeys,...Object.keys(net)];
     const hasData=allKeys.length>0;
@@ -365,19 +397,19 @@ class Component extends DCLogic {
     const sleepV=k=>{const v=parseFloat((d.logs[k]||{}).sleep);return isNaN(v)?null:v;};
     const succ=(h,k)=>h==='sleep'?(sleepV(k)!==null&&sleepV(k)>=8):h==='net'?!!net[k]:!!(d.logs[k]||{})[h];
     const miss=(h,k)=>h==='sleep'&&sleepV(k)!==null&&sleepV(k)<8;
-    const wkCount=ws=>{let n=0;for(let i=0;i<7;i++)if(succ('workout',addDays(ws,i)))n++;return n;};
+    const wkCount=(ws,h='workout')=>{let n=0;for(let i=0;i<7;i++)if(succ(h,addDays(ws,i)))n++;return n;};
     const fw=weekStart(first);
-    const curStreak=(h,a)=>{if(h==='workout'){let ws=weekStart(a);if(wkCount(ws)<5)ws=addDays(ws,-7);let n=0;while(ws>=fw&&wkCount(ws)>=5){n++;ws=addDays(ws,-7);}return n;}let k=a;if(!succ(h,k))k=addDays(k,-1);let n=0;while(k>=first&&succ(h,k)){n++;k=addDays(k,-1);}return n;};
-    const longestMap={};HABITS.forEach(h=>{let best=0,run=0;if(h.key==='workout'){for(let ws=fw;ws<=weekStart(T);ws=addDays(ws,7)){run=wkCount(ws)>=5?run+1:0;if(run>best)best=run;}}else{for(let k=first;k<=T;k=addDays(k,1)){run=succ(h.key,k)?run+1:0;if(run>best)best=run;}}longestMap[h.key]=best;});
+    const curStreak=(h,a)=>{if(WK[h]){const t=WK[h];let ws=weekStart(a);if(wkCount(ws,h)<t)ws=addDays(ws,-7);let n=0;while(ws>=fw&&wkCount(ws,h)>=t){n++;ws=addDays(ws,-7);}return n;}let k=a;if(!succ(h,k))k=addDays(k,-1);let n=0;while(k>=first&&succ(h,k)){n++;k=addDays(k,-1);}return n;};
+    const longestMap={};HABITS.forEach(h=>{let best=0,run=0;if(WK[h.key]){for(let ws=fw;ws<=weekStart(T);ws=addDays(ws,7)){run=wkCount(ws,h.key)>=WK[h.key]?run+1:0;if(run>best)best=run;}}else{for(let k=first;k<=T;k=addDays(k,1)){run=succ(h.key,k)?run+1:0;if(run>best)best=run;}}longestMap[h.key]=best;});
     const dayScore=k=>HABITS.filter(h=>succ(h.key,k)).length/7;
     const avgScore=(a,b)=>{let sum=0,n=0;for(let k=a<first?first:a;k<=b&&k<=T;k=addDays(k,1)){sum+=dayScore(k);n++;}return n?sum/n:null;};
     const C=2*Math.PI*20,SC=2*Math.PI*74;
     // Today
     const habits=HABITS.map(h=>{
-      const isW=h.key==='workout',done=succ(h.key,vd),m=miss(h.key,vd);
+      const isW=!!WK[h.key],done=h.key==='net'?wkCount(weekStart(vd),'net')>=1:succ(h.key,vd),m=miss(h.key,vd);
       const cur=curStreak(h.key,vd),pr=Math.max(longestMap[h.key],cur);
-      const wc=isW?wkCount(weekStart(vd)):0;
-      const frac=isW?Math.min(1,wc/5):(pr?cur/pr:0);
+      const wc=isW?wkCount(weekStart(vd),h.key):0;
+      const frac=isW?Math.min(1,wc/WK[h.key]):(pr?cur/pr:0);
       const atPR=cur>0&&cur>=pr;
       return {key:h.key,name:h.name,cur,done,
         sub:h.rule+' · '+cur+(isW?' wk':' day')+' streak',
@@ -387,7 +419,7 @@ class Component extends DCLogic {
         prLabel:pr===0?'PR —':atPR?'PR ▲':'PR '+pr,prFg:atPR?'var(--acc)':'var(--mute)',
         btnBg:done?'var(--acc)':'var(--ctl)',btnFg:done?'var(--onAcc)':'var(--fg)',btnBorder:done?'var(--acc)':'var(--ctlB)',btnLabel:done?'✓ Done':'Log',
         inBg:done?'var(--acc)':'var(--ctl)',inFg:done?'var(--onAcc)':'var(--fg)',inBorder:m?'var(--miss)':done?'var(--acc)':'var(--ctlB)',
-        weekLabel:isW?wc+'/5 wk':'',netCount:net[vd]?net[vd]+' logged':'',
+        weekLabel:isW?wc+'/'+WK[h.key]+' wk':'',
         days:[6,5,4,3,2,1,0].map(o=>{const k=addDays(vd,-o),ok=succ(h.key,k),mm=miss(h.key,k),last=o===0;return {title:fmtShort(k),bg:ok?(last?'var(--acc)':'var(--past)'):mm?'transparent':'var(--track)',border:mm?'var(--miss)':(last&&!ok?'var(--mute)':'transparent')};}),
         onToggle:()=>this.setLog(vd,{[h.key]:!done})};
     });
@@ -395,35 +427,48 @@ class Component extends DCLogic {
     const vdD=parse(vd);
     // Tasks
     const live=d.tasks.filter(t=>!t.done||t.doneOn===T);
-    const filters=[{key:'all',label:'All',color:'var(--fg)'},...Object.keys(TAGS).map(k=>({key:k,label:TAGS[k].label,color:TAGS[k].color}))].map(f=>{const a=s.filter===f.key;return {...f,count:f.key==='all'?live.length:live.filter(t=>t.tag===f.key).length,bg:a?'var(--fg)':'transparent',fg:a?'var(--bg)':'var(--fg)',border:a?'var(--fg)':'var(--ctlB)',color:a&&f.key==='all'?'var(--bg)':f.color,onClick:()=>this.setState({filter:f.key})};});
-    const visibleTasks=live.filter(t=>s.filter==='all'||t.tag===s.filter).sort((a,b)=>a.done-b.done).map(t=>({...t,tagLabel:TAGS[t.tag].label.toUpperCase(),color:TAGS[t.tag].color,box:t.done?'var(--acc)':'transparent',boxBorder:t.done?'var(--acc)':'var(--ctlB)',mark:t.done?'✓':'',fg:t.done?'var(--mute)':'var(--fg)',deco:t.done?'line-through':'none',
-      onToggle:()=>this.upd(dd=>({...dd,tasks:dd.tasks.map(x=>x.id===t.id?{...x,done:!x.done,doneOn:!x.done?todayKey():null}:x)})),onRemove:()=>this.upd(dd=>({...dd,tasks:dd.tasks.filter(x=>x.id!==t.id)}))}));
+    const tagMap={};d.tags.forEach(g=>{tagMap[g.key]=g;});const tagName=g=>g.label.trim()||'Untitled';
+    const tagOptions=[...d.tags.map(g=>({key:g.key,label:tagName(g)})),{key:'',label:'No category'}];
+    const prioRank=t=>PRIO[t.prio]?PRIO[t.prio].rank:3;
+    const dueInfo=k=>!k?null:k<T?{label:'Overdue · '+fmtShort(k),color:'var(--miss)'}:k===T?{label:'Due today',color:'var(--acc)'}:k===addDays(T,1)?{label:'Due tomorrow',color:'var(--fg)'}:{label:'Due '+fmtShort(k)+(k.slice(0,4)!==T.slice(0,4)?' '+k.slice(0,4):''),color:'var(--mute)'};
+    // urgency: open first, then priority, then soonest due date, then oldest
+    const byUrgency=(a,b)=>a.done-b.done||prioRank(a)-prioRank(b)||(a.due||'9999').localeCompare(b.due||'9999')||(a.created||'').localeCompare(b.created||'');
+    const filters=[{key:'all',label:'All',color:'var(--fg)'},...d.tags.map(g=>({key:g.key,label:tagName(g),color:g.color}))].map(f=>{const a=s.filter===f.key;return {...f,count:f.key==='all'?live.length:live.filter(t=>t.tag===f.key).length,bg:a?'var(--fg)':'transparent',fg:a?'var(--bg)':'var(--fg)',border:a?'var(--fg)':'var(--ctlB)',color:a&&f.key==='all'?'var(--bg)':f.color,onClick:()=>this.setState({filter:f.key})};});
+    const visibleTasks=live.filter(t=>s.filter==='all'||t.tag===s.filter).sort(byUrgency).map(t=>{const g=tagMap[t.tag],p=PRIO[t.prio],du=t.done?null:dueInfo(t.due),ed=!!s.editTask&&s.editTask.id===t.id;return {...t,editing:ed,viewing:!ed,hasTag:!!g,tagLabel:g?tagName(g).toUpperCase():'',color:g?g.color:'transparent',hasPrio:!!p,prioLabel:p?p.label.toUpperCase():'',prioColor:p?p.color:'',hasDue:!!du,dueLabel:du?du.label:'',dueColor:du?du.color:'',
+      onEdit:()=>this.setState({editTask:{id:t.id,text:t.text,tag:tagMap[t.tag]?t.tag:'',prio:t.prio||'',due:t.due||''}}),box:t.done?'var(--acc)':'transparent',boxBorder:t.done?'var(--acc)':'var(--ctlB)',mark:t.done?'✓':'',fg:t.done?'var(--mute)':'var(--fg)',deco:t.done?'line-through':'none',
+      onToggle:()=>this.upd(dd=>({...dd,tasks:dd.tasks.map(x=>x.id===t.id?{...x,done:!x.done,doneOn:!x.done?todayKey():null}:x)})),onRemove:()=>this.upd(dd=>({...dd,tasks:dd.tasks.filter(x=>x.id!==t.id)}))};});
+    const tagRows=d.tags.map(g=>{const n=d.tasks.filter(t=>t.tag===g.key).length;return {id:g.key,label:g.label,color:g.color,count:n?n+(n===1?' task':' tasks'):'',
+      onColor:()=>{const used=d.tags.filter(x=>x.key!==g.key).map(x=>x.color),i0=PALETTE.indexOf(g.color),next=[1,2,3,4,5,6,7].map(j=>PALETTE[(i0+j)%PALETTE.length]);this.updTag(g.key,{color:next.find(c=>!used.includes(c))||next[0]});},onLabel:e=>this.updTag(g.key,{label:e.target.value}),onDelete:()=>this.delTag(g.key)};});
+    const ed=s.editTask||{};
     // Consistency
     const c30=hasData?avgScore(addDays(T,-29),T):null;
     const spark=[];for(let i=13;i>=0;i--){const k=addDays(T,-i),v=k<first?0:dayScore(k);spark.push({h:Math.max(4,v*100)+'%',bg:i===0?'var(--acc)':'var(--heatMiss)',title:fmtShort(k)+' · '+Math.round(v*7)+'/7'});}
     // Trends
-    const W=[];for(let i=11;i>=0;i--)W.push(addDays(weekStart(T),-7*i));
-    const inRange=ws=>addDays(ws,6)>=first&&hasData;
+    const cw=weekStart(T);
+    const span=n=>{let st=fw;const latest=addDays(cw,-7*(n-1));if(st<latest)st=latest;return Array.from({length:n},(_,i)=>addDays(st,7*i));};
+    const axisEnd=ws=>ws===cw?'This week':fmtShort(ws);
+    const W=span(12);
+    const inRange=ws=>hasData&&ws<=T&&addDays(ws,6)>=first;
     const cnt=(h,ws)=>{let n=0;for(let i=0;i<7;i++)if(succ(h,addDays(ws,i)))n++;return n;};
     const chart=(vals,max,target,fmt,title,sub,tl)=>{const X=i=>(12+i*(296/11)).toFixed(1),Y=v=>(108-Math.min(v,max)/max*96).toFixed(1);const pts=vals.map((v,i)=>v==null?null:{cx:X(i),cy:Y(v)}).filter(Boolean);const lv=[...vals].reverse().find(v=>v!=null);return {title,sub,targetLabel:tl,points:pts.map(p=>p.cx+','+p.cy).join(' '),dots:pts,targetY:Y(target),latest:lv==null?'—':fmt(lv)};};
     const sleepAvg=W.map(ws=>{let sum=0,n=0;for(let j=0;j<7;j++){const v=sleepV(addDays(ws,j));if(v!==null){sum+=v;n++;}}return n?sum/n:null;});
     const charts=[chart(sleepAvg,10,8,v=>v.toFixed(1)+'h','Sleep','Average hours per night','— 8h target'),
       chart(W.map(ws=>inRange(ws)?cnt('reading',ws):null),7,7,v=>v+'/7','Reading','Days per week','— 7/7'),
       chart(W.map(ws=>inRange(ws)?wkCount(ws):null),7,5,v=>v+'/7','Workout','Sessions per week','— 5 target')];
-    const W26=[];for(let i=25;i>=0;i--)W26.push(addDays(weekStart(T),-7*i));
+    const W26=span(26),cwi=W26.indexOf(cw);
     const wkScores=W26.map(ws=>inRange(ws)?avgScore(ws,addDays(ws,6)):null);
     const best=wkScores.filter(v=>v!=null).reduce((a,b)=>Math.max(a,b),-1);
-    const consistBars=W26.map((ws,i)=>{const v=wkScores[i];return {h:v==null?'0%':Math.max(2,v*100)+'%',bg:i===25?'var(--acc)':(v!=null&&v===best?'var(--past)':'var(--heatMiss)'),label:i===25&&v!=null?pct(v):'',title:'Week of '+fmtShort(ws)+(v==null?' · no data':' · '+pct(v))};});
-    const hs=addDays(weekStart(T),-52*7);
+    const consistBars=W26.map((ws,i)=>{const v=wkScores[i];return {h:v==null?'0%':Math.max(2,v*100)+'%',bg:i===cwi?'var(--acc)':(v!=null&&v===best?'var(--past)':'var(--heatMiss)'),label:i===cwi&&v!=null?pct(v):'',title:'Week of '+fmtShort(ws)+(v==null?' · no data':' · '+pct(v))};});
+    const hs=span(53)[0];
     let pm=-1;const heatMonths=[];for(let c=0;c<53;c++){const m=parse(addDays(hs,c*7)).getMonth();heatMonths.push({label:m!==pm?MON[m]:''});pm=m;}
-    const heat=HABITS.map(h=>{let total=0;const cols=[];for(let c=0;c<53;c++){const cells=[];for(let r=0;r<7;r++){const k=addDays(hs,c*7+r);if(k>T){cells.push({bg:'transparent',title:''});continue;}const ok=succ(h.key,k);if(ok)total++;cells.push({bg:ok?'var(--acc)':miss(h.key,k)?'var(--heatMiss)':'var(--track)',title:fmtShort(k)+(ok?' · done':'')});}cols.push({cells});}
-      const cur=curStreak(h.key,T),isW=h.key==='workout';return {name:h.name,cols,total:total+' successful days',streaks:'Current '+cur+(isW?' wk':' d')+' · PR '+Math.max(longestMap[h.key],cur)+(isW?' wk':' d')};});
-    const board=HABITS.map(h=>{const isW=h.key==='workout',cur=curStreak(h.key,T),pr=Math.max(longestMap[h.key],cur),atPR=cur>0&&cur>=pr;return {name:h.name,cur,unit:isW?'wk':'d',prLabel:atPR?'AT PR ▲':'PR '+pr,prUnit:isW?'weeks':'days',prFg:atPR?'var(--heroAcc)':'var(--heroFg)'};});
+    const heat=HABITS.map(h=>{let total=0;const cols=[];for(let c=0;c<53;c++){const cells=[];for(let r=0;r<7;r++){const k=addDays(hs,c*7+r);if(k>T||k<first){cells.push({bg:'transparent',border:'var(--track)',title:''});continue;}const ok=succ(h.key,k);if(ok)total++;cells.push({bg:ok?'var(--acc)':miss(h.key,k)?'var(--heatMiss)':'var(--track)',border:'transparent',title:fmtShort(k)+(ok?' · done':'')});}cols.push({cells});}
+      const cur=curStreak(h.key,T),isW=!!WK[h.key];return {name:h.name,cols,total:total+' successful days',streaks:'Current '+cur+(isW?' wk':' d')+' · PR '+Math.max(longestMap[h.key],cur)+(isW?' wk':' d')};});
+    const board=HABITS.map(h=>{const isW=!!WK[h.key],cur=curStreak(h.key,T),pr=Math.max(longestMap[h.key],cur),atPR=cur>0&&cur>=pr;return {name:h.name,cur,unit:isW?'wk':'d',prLabel:atPR?'AT PR ▲':'PR '+pr,prUnit:isW?'weeks':'days',prFg:atPR?'var(--heroAcc)':'var(--heroFg)'};});
     // Networking
     const q=s.cSearch.trim().toLowerCase();
     const sorted=[...d.contacts].sort((a,b)=>b.date.localeCompare(a.date)||(b.ts||0)-(a.ts||0));
-    const contacts=sorted.filter(c=>s.cFilter==='all'||c.status===s.cFilter).filter(c=>!q||(c.name+' '+c.company+' '+(c.role||'')+' '+c.notes).toLowerCase().includes(q)).map(c=>{const ch=c.status==='chatted';const dt=c.date?parse(c.date):null;return {...c,role:c.role||'',linkedin:c.linkedin||'',noLink:!c.linkedin,company:c.company||'—',dateLabel:!dt?'Earlier':fmtShort(c.date)+(dt.getFullYear()!==parse(T).getFullYear()?' '+dt.getFullYear():''),statusLabel:ch?'Chatted':'Reached out',stBg:ch?'var(--acc)':'var(--ctl)',stFg:ch?'var(--onAcc)':'var(--fg)',stBorder:ch?'var(--acc)':'var(--ctlB)',
-      onStatus:()=>this.updContact(c.id,{status:ch?'reached':'chatted'}),onNotes:e=>this.updContact(c.id,{notes:e.target.value}),onDelete:()=>this.upd(dd=>({...dd,contacts:dd.contacts.filter(x=>x.id!==c.id)}))};});
+    const contacts=sorted.filter(c=>s.cFilter==='all'||c.status===s.cFilter).filter(c=>!q||(c.name+' '+c.company+' '+(c.role||'')+' '+c.notes).toLowerCase().includes(q)).map(c=>{const ch=c.status==='chatted';const dt=c.date?parse(c.date):null;return {...c,role:c.role||'',linkedin:c.linkedin||'',noLink:!c.linkedin,company:c.company||'—',dateLabel:!dt?'Earlier':fmtShort(c.date)+(dt.getFullYear()!==parse(T).getFullYear()?' '+dt.getFullYear():''),statusLabel:ch?'Chatted'+(callOf(c)?' · '+fmtShort(callOf(c)):''):'Reached out',stBg:ch?'var(--acc)':'var(--ctl)',stFg:ch?'var(--onAcc)':'var(--fg)',stBorder:ch?'var(--acc)':'var(--ctlB)',
+      onStatus:()=>this.updContact(c.id,ch?{status:'reached',callDate:null}:{status:'chatted',callDate:todayKey()}),onNotes:e=>this.updContact(c.id,{notes:e.target.value}),onDelete:()=>this.upd(dd=>({...dd,contacts:dd.contacts.filter(x=>x.id!==c.id)}))};});
     const chatted=d.contacts.filter(c=>c.status==='chatted').length;
     const cFilters=[['all','All',d.contacts.length],['reached','Reached out',d.contacts.length-chatted],['chatted','Chatted',chatted]].map(([k,l,n])=>{const a=s.cFilter===k;return {label:l,count:n,bg:a?'var(--fg)':'transparent',fg:a?'var(--bg)':'var(--fg)',border:a?'var(--fg)':'var(--ctlB)',onClick:()=>this.setState({cFilter:k})};});
     // Goals
@@ -442,12 +487,12 @@ class Component extends DCLogic {
       weeks.push({title:'Week '+isoWeek(w0),range:fmtShort(w0)+' – '+fmtShort(addDays(w0,6)),current:cur,score:sc==null?'—':pct(sc),
         bg:cur?'var(--heroBg)':'var(--card)',border:cur?'var(--heroB)':'var(--cardB)',fg:cur?'var(--heroFg)':'var(--fg)',mute:cur?'var(--heroMute)':'var(--mute)',line:cur?'var(--heroTrack)':'var(--line)',
         rows:HABITS.map(h=>{let n=0;const cells=[0,1,2,3,4,5,6].map(i=>{const k=addDays(w0,i);if(k>T)return {bg:'transparent',border:cur?'var(--heroTrack)':'var(--line)',title:fmtShort(k)};const ok=succ(h.key,k);if(ok)n++;return {bg:ok?'var(--acc)':cur?'var(--heroTrack)':'var(--track)',border:miss(h.key,k)?'var(--miss)':'transparent',title:fmtShort(k)};});
-          let badge='',kind='';if(h.key==='workout'){badge=n>=5?'Hit':cur?'':'Missed';kind=n>=5?'win':'miss';}else if(n===7){badge='Perfect';kind='win';}
+          let badge='',kind='';if(WK[h.key]){const t=WK[h.key];badge=n>=t?'Hit':cur?'':'Missed';kind=n>=t?'win':'miss';}else if(n===7){badge='Perfect';kind='win';}
           return {name:h.name,cells,count:n+'/7',hasBadge:!!badge,badge,badgeBg:kind==='win'?'var(--acc)':'transparent',badgeFg:kind==='win'?'var(--onAcc)':'var(--miss)',badgeBorder:kind==='win'?'var(--acc)':'var(--miss)'};})});ws=addDays(ws,-7);}
     const tabs=[['today','Today'],['trends','Trends'],['net','Networking'],['goals','Goals'],['weekly','Weekly Results']];
     return {
-      themeVars:light?LIGHT:{},toggleTheme:()=>this.upd(dd=>({...dd,theme:dd.theme==='light'?'dark':'light'})),
-      switchBg:light?'var(--acc)':'var(--ctlB)',knobLeft:light?'18px':'2px',knobBg:light?'var(--onAcc)':'var(--fg)',
+      themeVars:light?LIGHT:{},toggleTheme:()=>this.upd(dd=>({...dd,theme:dd.theme==='light'?'dark':'light',themeSet:true})),
+      switchBg:light?'var(--ctlB)':'var(--acc)',knobLeft:light?'2px':'18px',knobBg:light?'var(--fg)':'var(--onAcc)',
       nav:tabs.map(([k,l])=>{const a=s.tab===k;return {label:l,bg:a?'var(--navOnBg)':'transparent',fg:a?'var(--navOnFg)':'var(--mute)',dot:a?'var(--navDot)':'transparent',weight:a?500:400,onClick:()=>this.setState({tab:k})};}),
       isToday:s.tab==='today',isTrends:s.tab==='trends',isNet:s.tab==='net',isGoals:s.tab==='goals',isWeekly:s.tab==='weekly',
       consistency30:c30==null?'—':Math.round(c30*100),consistencyUnit:c30==null?'':'%',spark,
@@ -456,16 +501,21 @@ class Component extends DCLogic {
       onPrevDay:()=>this.setState(st=>({vd:addDays(st.vd,-1)})),onNextDay:()=>this.setState(st=>({vd:st.vd<todayKey()?addDays(st.vd,1):st.vd})),onToday:()=>this.setState({vd:todayKey()}),
       leftText:left===0?'All seven logged. Clean day.':left+(left===1?' habit':' habits')+' left',
       habits,doneCount,scoreOp:doneCount?1:0,scoreDash:(doneCount/7*SC).toFixed(1)+' '+SC.toFixed(1),
-      liveStreaks:habits.filter(h=>h.cur>0).length,topStreak:Math.max(0,...habits.filter(h=>h.key!=='workout').map(h=>h.cur)),
-      prsOnLine:habits.filter(h=>!h.done&&h.key!=='workout'&&h.cur>0&&h.cur>=Math.max(longestMap[h.key],h.cur)-1).length,
+      liveStreaks:habits.filter(h=>h.cur>0).length,topStreak:Math.max(0,...habits.filter(h=>!WK[h.key]).map(h=>h.cur)),
+      prsOnLine:habits.filter(h=>!h.done&&!WK[h.key]&&h.cur>0&&h.cur>=Math.max(longestMap[h.key],h.cur)-1).length,
       sleepRaw:(d.logs[vd]||{}).sleep??'',onSleep:e=>this.setLog(vd,{sleep:e.target.value}),
-      outreachToday:d.contacts.filter(c=>c.date===vd).map(c=>({name:c.name,company:c.company})),netName:s.netName,netCo:s.netCo,
+      outreachToday:d.contacts.filter(c=>callOf(c)===vd).map(c=>({name:c.name,company:c.company})),netName:s.netName,netCo:s.netCo,
       onNetName:e=>this.setState({netName:e.target.value}),onNetCo:e=>this.setState({netCo:e.target.value}),onNetKey:e=>{if(e.key==='Enter')this.addOutreach();},onAddOutreach:this.addOutreach,toggleNetForm:()=>this.setState(st=>({netOpen:!st.netOpen})),
       filters,visibleTasks,tasksEmpty:visibleTasks.length===0,taskDone:live.filter(t=>t.done).length,taskTotal:live.length,hasCompleted:d.tasks.some(t=>t.done),
       onClearDone:()=>this.upd(dd=>({...dd,tasks:dd.tasks.filter(t=>!t.done)})),
-      newText:s.newText,newTag:s.newTag,onNewText:e=>this.setState({newText:e.target.value}),onNewTag:e=>this.setState({newTag:e.target.value}),onNewKey:e=>{if(e.key==='Enter')this.addTask();},onAddTask:this.addTask,
-      board,charts,weekAxisStart:fmtShort(W[0]),consistBars,consistAxisStart:fmtShort(W26[0]),thisWeekScore:wkScores[25]==null?'—':pct(wkScores[25]),bestWeek:best<0?'—':pct(best),heat,heatMonths,
-      netTotal:d.contacts.length,netChatted:chatted,netWeek:d.contacts.filter(c=>c.date>=weekStart(T)).length,netStreak:curStreak('net',T),
+      tagOptions,tagRows,tagEdit:s.tagEdit,tagEditLabel:s.tagEdit?'Done':'✎ Edit',toggleTagEdit:()=>this.setState(st=>({tagEdit:!st.tagEdit})),
+      newTagName:s.newTagName,onNewTagName:e=>this.setState({newTagName:e.target.value}),onNewTagKey:e=>{if(e.key==='Enter')this.addTagCat();},onAddTagCat:this.addTagCat,
+      newPrio:s.newPrio,newDue:s.newDue,onNewPrio:e=>this.setState({newPrio:e.target.value}),onNewDue:e=>this.setState({newDue:e.target.value}),
+      edText:ed.text||'',edTag:ed.tag||'',edPrio:ed.prio||'',edDue:ed.due||'',onEdText:e=>this.setEd({text:e.target.value}),onEdTag:e=>this.setEd({tag:e.target.value}),onEdPrio:e=>this.setEd({prio:e.target.value}),onEdDue:e=>this.setEd({due:e.target.value}),
+      onEdKey:e=>{if(e.key==='Enter')this.saveEdit();if(e.key==='Escape')this.setState({editTask:null});},onEdSave:this.saveEdit,onEdCancel:()=>this.setState({editTask:null}),
+      newText:s.newText,newTag:tagMap[s.newTag]?s.newTag:'',onNewText:e=>this.setState({newText:e.target.value}),onNewTag:e=>this.setState({newTag:e.target.value}),onNewKey:e=>{if(e.key==='Enter')this.addTask();},onAddTask:this.addTask,
+      board,charts,trendsSub:hasData?'Since '+fmtShort(first)+(parse(first).getFullYear()!==parse(T).getFullYear()?' '+parse(first).getFullYear():''):'Start logging to see trends',weekAxisStart:fmtShort(W[0]),weekAxisEnd:axisEnd(W[11]),consistBars,consistAxisStart:fmtShort(W26[0]),consistAxisEnd:axisEnd(W26[25]),thisWeekScore:wkScores[cwi]==null?'—':pct(wkScores[cwi]),bestWeek:best<0?'—':pct(best),heat,heatMonths,
+      netTotal:d.contacts.length,netChatted:chatted,netWeek:d.contacts.filter(c=>callOf(c)>=weekStart(T)).length,netStreak:curStreak('net',T),
       cName:s.cName,cCo:s.cCo,cDate:s.cDate,cStatus:s.cStatus,cNotes:s.cNotes,cSearch:s.cSearch,
       onCName:e=>this.setState({cName:e.target.value}),onCCo:e=>this.setState({cCo:e.target.value}),onCDate:e=>this.setState({cDate:e.target.value}),onCStatus:e=>this.setState({cStatus:e.target.value}),onCNotes:e=>this.setState({cNotes:e.target.value}),onCSearch:e=>this.setState({cSearch:e.target.value}),
       onCKey:e=>{if(e.key==='Enter')this.addContact();},impOpen:s.impOpen,impText:s.impText,impMsg:s.impMsg,toggleImport:()=>this.setState(st=>({impOpen:!st.impOpen,impMsg:''})),onImpText:e=>this.setState({impText:e.target.value}),onImport:this.importContacts,onAddContact:this.addContact,cFilters,contacts,contactsEmpty:contacts.length===0,contactsEmptyText:d.contacts.length?'No contacts match.':'No outreach yet. Add your first contact above, or log one from Today.',
@@ -487,7 +537,7 @@ const lookup=(path,scope)=>{
 };
 const interp=(str,scope)=>{const m=str.match(ONE);if(m)return lookup(m[1],scope);return str.replace(EXPR,(_,p)=>{const v=lookup(p,scope);return v==null?'':v;});};
 const kids=(node,scope)=>Array.from(node.childNodes,c=>build(c,scope));
-function build(node,scope){
+function build(node,scope,inFor){
   if(node.nodeType===3){const t=node.nodeValue;if(!t.trim()&&t.includes('\n'))return null;const v=interp(t,scope);return v==null||v===false?null:String(v);}
   if(node.nodeType!==1)return null;
   const tag=node.localName;
@@ -496,9 +546,13 @@ function build(node,scope){
     return h(Fragment,null,list.map((item,i)=>{const sc=Object.create(scope);sc[as]=item;return h(Fragment,{key:item&&item.id!=null?item.id:i},kids(node,sc));}));
   }
   if(tag==='sc-if')return interp(node.getAttribute('value'),scope)?h(Fragment,null,kids(node,scope)):null;
+  if(!inFor&&node.hasAttribute('data-for')){
+    const list=interp(node.getAttribute('data-for'),scope)||[],as=node.getAttribute('data-as');
+    return h(Fragment,null,list.map((item,i)=>{const sc=Object.create(scope);sc[as]=item;return h(Fragment,{key:i},build(node,sc,true));}));
+  }
   const props={};
   for(const {name,value} of node.attributes){
-    if(name.startsWith('hint-'))continue;
+    if(name.startsWith('hint-')||name==='data-for'||name==='data-as')continue;
     // React-style onChange on text inputs fires per keystroke
     const n=name==='onchange'&&(tag==='input'||tag==='textarea')?'oninput':name;
     props[n]=interp(value,scope);
