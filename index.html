@@ -246,6 +246,70 @@ select{-webkit-appearance:none;appearance:none;cursor:pointer;padding-right:32px
 </div>
 </sc-if>
 
+<sc-if value="{{ isFin }}">
+<header style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:var(--mute)">{{ finRange }}</div><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:38px;letter-spacing:-.01em;line-height:1">Finances</div></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ finPeriods }}" as="fp"><button onClick="{{ fp.onClick }}" style="padding:7px 14px;border-radius:999px;border:1px solid {{ fp.border }};background:{{ fp.bg }};color:{{ fp.fg }};font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap">{{ fp.label }}</button></sc-for></div>
+</header>
+<div style="padding:18px;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<input placeholder="What did you buy?" value="{{ eItem }}" onChange="{{ onEItem }}" onKeyDown="{{ onEKey }}" style="flex:2 1 220px;height:38px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg);min-width:0">
+<div style="flex:0 1 130px;min-width:110px;position:relative;display:flex;align-items:center"><span style="position:absolute;left:14px;font-size:13px;color:var(--mute);pointer-events:none">$</span><input type="number" step="0.01" min="0" placeholder="0.00" value="{{ eAmt }}" onChange="{{ onEAmt }}" onKeyDown="{{ onEKey }}" style="width:100%;box-sizing:border-box;height:38px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg);min-width:0;padding-left:26px"></div>
+<select value="{{ eCat }}" onChange="{{ onECat }}" title="Category" style="flex:1 1 170px;height:38px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg);min-width:0;background:var(--select)"><option data-for="{{ expCatOptions }}" data-as="o" value="{{ o.key }}">{{ o.label }}</option></select>
+<input type="date" value="{{ eDate }}" onChange="{{ onEDate }}" title="Date" style="flex:0 1 150px;height:38px;padding:0 14px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg);min-width:0">
+<button onClick="{{ onAddExpense }}" style="height:38px;padding:0 20px;border-radius:999px;border:0;background:var(--acc);color:var(--onAcc);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Add expense</button>
+<sc-if value="{{ eMsg }}"><div style="flex-basis:100%;font-size:12px;color:var(--miss)">{{ eMsg }}</div></sc-if>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+<div style="padding:20px 22px;border-radius:24px;background:var(--heroBg);border:1px solid var(--heroB);color:var(--heroFg);display:flex;flex-direction:column;gap:10px"><div style="font-size:11px;letter-spacing:.12em;color:var(--heroMute)">{{ finSpentLabel }}</div><div style="font-family:Archivo;font-stretch:125%;font-weight:300;line-height:1;font-size:40px">{{ finTotal }}</div><div style="font-size:12px;color:var(--heroMute)">{{ finDelta }}</div></div>
+<div style="padding:20px 22px;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-direction:column;gap:10px"><div style="font-size:11px;letter-spacing:.12em;color:var(--mute)">DAILY AVERAGE</div><div style="font-family:Archivo;font-stretch:125%;font-weight:300;line-height:1;font-size:34px">{{ finDaily }}</div><div style="font-size:12px;color:var(--mute)">{{ finDays }}</div></div>
+<div style="padding:20px 22px;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-direction:column;gap:10px"><div style="font-size:11px;letter-spacing:.12em;color:var(--mute)">PURCHASES</div><div style="font-family:Archivo;font-stretch:125%;font-weight:300;line-height:1;font-size:34px">{{ finCount }}</div><div style="font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ finLargest }}</div></div>
+<div style="padding:20px 22px;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;letter-spacing:.12em;color:var(--mute);white-space:nowrap">WEEKLY BUDGET</div><div style="position:relative;display:flex;align-items:center;width:84px;flex:none"><span style="position:absolute;left:10px;font-size:12px;color:var(--mute);pointer-events:none">$</span><input type="number" min="0" step="1" placeholder="Set" value="{{ budgetRaw }}" onChange="{{ onBudget }}" title="Weekly budget" style="width:100%;box-sizing:border-box;height:28px;padding:0 8px 0 20px;border-radius:999px;font-size:12px;border:1px solid var(--ctlB);background:var(--input);color:var(--fg)"></div></div>
+<sc-if value="{{ hasBudget }}"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;line-height:1;font-size:34px;color:{{ budgetFg }}">{{ budgetBig }}</div><div style="display:flex;flex-direction:column;gap:6px"><div style="height:6px;border-radius:3px;background:var(--track);overflow:hidden"><div style="height:100%;width:{{ budgetW }};border-radius:3px;background:{{ budgetBar }};transition:width .4s"></div></div><div style="font-size:12px;color:var(--mute)">{{ budgetSub }}</div></div></sc-if>
+<sc-if value="{{ noBudget }}"><div style="font-size:13px;color:var(--mute);line-height:1.4">Set a weekly limit to see how much you have left and mark it on the chart.</div></sc-if>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;align-items:start">
+<div style="padding:22px 24px;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:15px;font-weight:500">Where it went</div><div style="font-size:12px;color:var(--mute)">Share of spending · {{ finPeriodName }}</div></div><button onClick="{{ toggleECatEdit }}" style="padding:6px 11px;border-radius:999px;border:1px dashed var(--ctlB);background:transparent;color:var(--mute);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap">{{ eCatEditLabel }}</button></div>
+<sc-if value="{{ eCatEdit }}">
+<div style="display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:var(--input);border:1px solid var(--line)">
+<div style="font-size:11px;letter-spacing:.12em;color:var(--mute)">CATEGORIES · UP TO 8</div>
+<sc-for list="{{ eCatRows }}" as="ec"><div style="display:flex;align-items:center;gap:8px"><span style="width:12px;height:12px;flex:none;border-radius:3px;background:{{ ec.color }}"></span><input value="{{ ec.label }}" onChange="{{ ec.onLabel }}" placeholder="Category name" style="flex:1;min-width:0;height:32px;padding:0 12px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--ctl);color:var(--fg)"><span style="font-size:11px;color:var(--mute);white-space:nowrap">{{ ec.count }}</span><button onClick="{{ ec.onDelete }}" title="Delete category" style="border:0;background:none;color:var(--mute);font-size:16px;cursor:pointer;padding:0 2px">×</button></div></sc-for>
+<sc-if value="{{ canAddECat }}"><div style="display:flex;gap:6px"><input placeholder="New category (e.g. Travel)" value="{{ newECat }}" onChange="{{ onNewECat }}" onKeyDown="{{ onNewECatKey }}" style="flex:1;min-width:0;height:32px;padding:0 12px;border-radius:999px;font-size:13px;border:1px solid var(--ctlB);background:var(--ctl);color:var(--fg)"><button onClick="{{ onAddECat }}" style="height:32px;padding:0 14px;border-radius:999px;border:0;background:var(--strong);color:var(--onStrong);font-size:12px;font-weight:600;cursor:pointer">Add</button></div></sc-if>
+<sc-if value="{{ eCatFull }}"><div style="font-size:12px;color:var(--mute)">That's the limit of 8 — rename or delete one to make room.</div></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ hasSplit }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="font-size:13px;min-height:18px">{{ splitReadout }}</div>
+<div style="display:flex;gap:2px;height:28px;border-radius:6px;overflow:hidden"><sc-for list="{{ split }}" as="sg"><div onMouseEnter="{{ sg.onEnter }}" onMouseLeave="{{ onSplitLeave }}" onClick="{{ sg.onClick }}" title="{{ sg.title }}" style="flex:{{ sg.grow }} 1 0;min-width:4px;background:{{ sg.color }};opacity:{{ sg.op }};cursor:pointer;transition:opacity .15s"></div></sc-for></div>
+</div>
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ ranked }}" as="sg"><div onMouseEnter="{{ sg.onEnter }}" onMouseLeave="{{ onSplitLeave }}" onClick="{{ sg.onClick }}" title="Show only {{ sg.label }}" style="display:grid;grid-template-columns:12px minmax(0,1fr) auto 48px;gap:12px;align-items:center;padding:9px 8px;border-top:1px solid var(--line);border-radius:10px;background:{{ sg.rowBg }};cursor:pointer"><span style="width:12px;height:12px;border-radius:3px;background:{{ sg.color }}"></span><div style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ sg.label }} <span style="font-size:12px;color:var(--mute)">{{ sg.countLabel }}</span></div><div style="font-size:14px;text-align:right;font-variant-numeric:tabular-nums">{{ sg.amtLabel }}</div><div style="font-size:13px;color:var(--mute);text-align:right;font-variant-numeric:tabular-nums">{{ sg.pctLabel }}</div></div></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ noSplit }}"><div style="padding:24px 0;font-size:13px;color:var(--mute)">No spending logged for {{ finPeriodName }}.</div></sc-if>
+</div>
+<div style="padding:22px 24px;border-radius:24px;background:var(--card);border:1px solid var(--cardB);display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:15px;font-weight:500">Weekly spending</div><div style="font-size:12px;color:var(--mute)">{{ wkSub }}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><div style="font-family:Archivo;font-stretch:125%;font-weight:300;line-height:1;font-size:28px">{{ wkReadVal }}</div><div style="font-size:12px;color:var(--mute)">{{ wkReadLabel }}</div></div></div>
+<div style="position:relative;height:170px;display:flex;align-items:flex-end;gap:6px;border-bottom:1px solid var(--ctlB)">
+<sc-if value="{{ hasBudget }}"><div style="position:absolute;left:0;right:0;bottom:{{ budgetPos }};border-top:1.5px dashed var(--mute);pointer-events:none"></div></sc-if>
+<sc-for list="{{ wkBars }}" as="wb"><div onMouseEnter="{{ wb.onEnter }}" onMouseLeave="{{ onWkLeave }}" title="{{ wb.title }}" style="flex:1;height:100%;display:flex;align-items:flex-end"><div style="width:100%;height:{{ wb.h }};border-radius:4px 4px 0 0;background:{{ wb.bg }};opacity:{{ wb.op }};transition:height .4s,opacity .15s"></div></div></sc-for>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mute)"><span>{{ wkAxisStart }}</span><span>{{ wkBudgetLabel }}</span><span>{{ wkAxisEnd }}</span></div>
+</div>
+</div>
+<div style="border-radius:24px;background:var(--card);border:1px solid var(--cardB);overflow-x:auto">
+<div style="min-width:620px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px 12px"><div style="display:flex;align-items:baseline;gap:10px"><div style="font-size:15px;font-weight:500">Expenses</div><div style="font-size:12px;color:var(--mute)">{{ expCountLabel }}</div></div><sc-if value="{{ hasExpFilter }}"><button onClick="{{ clearExpFilter }}" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--fg);background:var(--fg);color:var(--bg);font-size:12px;font-weight:500;cursor:pointer"><span style="width:8px;height:8px;border-radius:2px;background:{{ expFilterColor }}"></span>{{ expFilterLabel }} ×</button></sc-if></div>
+<div style="display:grid;grid-template-columns:80px minmax(0,2fr) minmax(0,1fr) 100px 28px;gap:14px;padding:0 22px 10px;font-size:11px;letter-spacing:.12em;color:var(--mute);border-bottom:1px solid var(--line)"><div>DATE</div><div>ITEM</div><div>CATEGORY</div><div style="text-align:right">AMOUNT</div><div></div></div>
+<sc-for list="{{ expRows }}" as="x"><div style="display:grid;grid-template-columns:80px minmax(0,2fr) minmax(0,1fr) 100px 28px;gap:14px;padding:10px 22px;align-items:center;border-bottom:1px solid var(--line)"><div style="font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums">{{ x.dateLabel }}</div><div style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ x.item }}</div><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute);min-width:0"><span style="width:8px;height:8px;flex:none;border-radius:2px;background:{{ x.color }}"></span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ x.catLabel }}</span></div><div style="font-size:14px;text-align:right;font-variant-numeric:tabular-nums">{{ x.amtLabel }}</div><button onClick="{{ x.onDelete }}" title="Delete" style="border:0;background:none;color:var(--mute);font-size:16px;cursor:pointer">×</button></div></sc-for>
+<sc-if value="{{ expEmpty }}"><div style="padding:28px 22px;font-size:13px;color:var(--mute)">{{ expEmptyText }}</div></sc-if>
+</div>
+</div>
+</sc-if>
+
 <sc-if value="{{ isGoals }}">
 <header style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
 <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:var(--mute)">Long-term targets, broken into milestones</div><div style="font-family:Archivo;font-stretch:125%;font-weight:400;font-size:38px;letter-spacing:-.01em;line-height:1">Goals</div></div>
@@ -340,6 +404,10 @@ const WK={};HABITS.forEach(h=>{if(h.weekly)WK[h.key]=h.weekly;});
 const callOf=c=>c.status==='chatted'?(c.callDate||c.date||''):'';
 const PALETTE=['oklch(0.7 0.11 250)','oklch(0.7 0.11 155)','oklch(0.7 0.11 340)','oklch(0.72 0.12 70)','oklch(0.66 0.14 28)','oklch(0.7 0.1 200)','oklch(0.66 0.12 295)','oklch(0.7 0.02 260)'];
 const DEFAULT_TAGS=[{key:'work',label:'Work',color:PALETTE[0]},{key:'school',label:'School',color:PALETTE[1]},{key:'personal',label:'Personal',color:PALETTE[2]},{key:'other',label:'Other',color:PALETTE[7]}];
+// categorical series colors (validated light/dark); a category keeps its slot so its color never changes
+const FIN_PAL={light:['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#4a3aa7','#e34948'],dark:['#3987e5','#d95926','#199e70','#c98500','#d55181','#008300','#9085e9','#e66767']};
+const DEFAULT_EXP_CATS=[{key:'groceries',label:'Groceries',slot:0},{key:'dining',label:'Dining out',slot:1},{key:'transport',label:'Transportation',slot:2},{key:'shopping',label:'Shopping',slot:3},{key:'fun',label:'Entertainment',slot:4},{key:'bills',label:'Bills & subscriptions',slot:5},{key:'other',label:'Other',slot:6}];
+const money=v=>(v<0?'-':'')+'$'+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const PRIO={high:{label:'High',rank:0,color:'var(--miss)'},med:{label:'Medium',rank:1,color:'var(--acc)'},low:{label:'Low',rank:2,color:'var(--mute)'}};
 const LIGHT={'--bg':'#E8E1D5','--glow1':'#F6F0E6','--glow2':'#DCD2C2','--fg':'#24211D','--mute':'#6E675D','--card':'rgba(255,255,255,.42)','--cardB':'rgba(36,33,29,.07)','--line':'rgba(36,33,29,.08)','--ctl':'rgba(255,255,255,.55)','--ctlB':'rgba(36,33,29,.16)','--input':'rgba(255,255,255,.7)','--select':'#F6F1E9','--track':'rgba(36,33,29,.09)','--heatMiss':'rgba(36,33,29,.28)','--past':'rgba(36,33,29,.72)','--acc':'oklch(0.52 0.1 48)','--onAcc':'#FBF7F0','--miss':'oklch(0.55 0.15 28)','--rowOn':'rgba(255,255,255,.62)','--heroBg':'#24211D','--heroB':'#24211D','--heroFg':'#F3EEE5','--heroMute':'rgba(243,238,229,.62)','--heroAcc':'oklch(0.75 0.1 60)','--heroTrack':'rgba(243,238,229,.12)','--navOnBg':'#24211D','--navOnFg':'#F3EEE5','--navDot':'oklch(0.75 0.1 60)','--strong':'#24211D','--onStrong':'#F3EEE5'};
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -355,11 +423,11 @@ const fmtShort=k=>{const d=parse(k);return MON[d.getMonth()]+' '+d.getDate();};
 const isoWeek=k=>{const d=parse(k);d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return 1+Math.round(((d-w1)/864e5-3+(w1.getDay()+6)%7)/7);};
 const uid=()=>Math.random().toString(36).slice(2,10);
 const pct=v=>Math.round(v*100)+'%';
-const defaults=()=>({logs:{},contacts:[],tasks:[],tags:DEFAULT_TAGS,goals:[{id:'internship',title:'Summer 2027 Internship',due:'Summer 2027',funnel:true,apps:0,interviews:0,offers:0,milestones:[]}],theme:'light'});
+const defaults=()=>({logs:{},contacts:[],tasks:[],tags:DEFAULT_TAGS,expenses:[],expCats:DEFAULT_EXP_CATS,finBudget:null,goals:[{id:'internship',title:'Summer 2027 Internship',due:'Summer 2027',funnel:true,apps:0,interviews:0,offers:0,milestones:[]}],theme:'light'});
 const load=()=>{let d=defaults();try{const r=localStorage.getItem(KEY);if(r)d={...d,...JSON.parse(r)};}catch(e){}if(!d.themeSet)d.theme='light';return d;};
 const T0=todayKey();
 class Component extends DCLogic {
-  state={data:load(),tab:'today',vd:T0,netName:'',netCo:'',netOpen:false,filter:'all',newText:'',newTag:'school',newPrio:'',newDue:'',editTask:null,tagEdit:false,newTagName:'',cName:'',cCo:'',cDate:T0,cStatus:'reached',cNotes:'',cFilter:'all',cSearch:'',impOpen:false,impText:'',impMsg:'',ms:{},gTitle:'',gDue:'',weeksShown:6};
+  state={data:load(),tab:'today',vd:T0,netName:'',netCo:'',netOpen:false,filter:'all',newText:'',newTag:'school',newPrio:'',newDue:'',editTask:null,tagEdit:false,newTagName:'',fPeriod:'week',fHover:null,fHoverWk:null,fCat:null,eItem:'',eAmt:'',eCat:'groceries',eDate:T0,eMsg:'',eCatEdit:false,newECat:'',cName:'',cCo:'',cDate:T0,cStatus:'reached',cNotes:'',cFilter:'all',cSearch:'',impOpen:false,impText:'',impMsg:'',ms:{},gTitle:'',gDue:'',weeksShown:6};
   componentDidMount(){this.syncBody();}
   componentDidUpdate(pp,ps){if(ps.data!==this.state.data){try{localStorage.setItem(KEY,JSON.stringify(this.state.data));}catch(e){}}this.syncBody();}
   syncBody(){const light=this.state.data.theme==='light';document.body.style.background=light?'#E8E1D5':'#131418';document.documentElement.style.colorScheme=light?'light':'dark';}
@@ -378,6 +446,13 @@ class Component extends DCLogic {
       add.push({id:uid(),ts:now-add.length,name,company,role,linkedin:/^https?:\/\//i.test(link)?link:'',date:'',status:/^yes/i.test(chat)?'chatted':'reached',notes:[sch?'Chat scheduled':'',note].filter(Boolean).join(' · ')});});
     this.setState(s=>({data:{...s.data,contacts:[...s.data.contacts,...add]},impText:'',impMsg:add.length?'Added '+add.length+(add.length===1?' contact.':' contacts.'):'Nothing new to add.'}));};
   addTask=()=>{const t=this.state.newText.trim();if(!t)return;this.setState(s=>({data:{...s.data,tasks:[...s.data.tasks,{id:uid(),text:t,tag:s.data.tags.some(g=>g.key===s.newTag)?s.newTag:'',prio:s.newPrio,due:s.newDue,done:false,created:todayKey()}]},newText:'',newPrio:'',newDue:''}));};
+  addExpense=()=>{const s=this.state,item=s.eItem.trim(),amt=parseFloat(s.eAmt);if(!item||!(amt>0)){this.setState({eMsg:!item?'Add what you bought.':'Enter an amount above $0.'});return;}
+    this.setState(st=>({data:{...st.data,expenses:[...st.data.expenses,{id:uid(),ts:Date.now(),item,amount:Math.round(amt*100)/100,cat:st.data.expCats.some(c=>c.key===st.eCat)?st.eCat:'',date:st.eDate||todayKey()}]},eItem:'',eAmt:'',eMsg:''}));};
+  updECat=(k,patch)=>this.upd(d=>({...d,expCats:d.expCats.map(c=>c.key===k?{...c,...patch}:c)}));
+  delECat=k=>{const d=this.state.data,c=d.expCats.find(x=>x.key===k),n=d.expenses.filter(e=>e.cat===k).length;if(n&&!confirm('Delete "'+(c.label.trim()||'Untitled')+'"? '+n+(n===1?' expense':' expenses')+' will become Uncategorized.'))return;
+    this.setState(s=>({data:{...s.data,expCats:s.data.expCats.filter(x=>x.key!==k),expenses:s.data.expenses.map(e=>e.cat===k?{...e,cat:''}:e)},fCat:s.fCat===k?null:s.fCat}));};
+  addECat=()=>{const l=this.state.newECat.trim(),cats=this.state.data.expCats;if(!l||cats.length>=8)return;const used=cats.map(c=>c.slot),slot=[0,1,2,3,4,5,6,7].find(i=>!used.includes(i)),key=uid();
+    this.setState(s=>({data:{...s.data,expCats:[...s.data.expCats,{key,label:l,slot}]},newECat:'',eCat:key}));};
   setEd=patch=>this.setState(s=>({editTask:{...s.editTask,...patch}}));
   saveEdit=()=>{const e=this.state.editTask;if(!e||!e.text.trim())return;this.setState(s=>({data:{...s.data,tasks:s.data.tasks.map(x=>x.id===e.id?{...x,text:e.text.trim(),tag:e.tag,prio:e.prio,due:e.due}:x)},editTask:null}));};
   updTag=(k,patch)=>this.upd(d=>({...d,tags:d.tags.map(g=>g.key===k?{...g,...patch}:g)}));
@@ -489,12 +564,48 @@ class Component extends DCLogic {
         rows:HABITS.map(h=>{let n=0;const cells=[0,1,2,3,4,5,6].map(i=>{const k=addDays(w0,i);if(k>T)return {bg:'transparent',border:cur?'var(--heroTrack)':'var(--line)',title:fmtShort(k)};const ok=succ(h.key,k);if(ok)n++;return {bg:ok?'var(--acc)':cur?'var(--heroTrack)':'var(--track)',border:miss(h.key,k)?'var(--miss)':'transparent',title:fmtShort(k)};});
           let badge='',kind='';if(WK[h.key]){const t=WK[h.key];badge=n>=t?'Hit':cur?'':'Missed';kind=n>=t?'win':'miss';}else if(n===7){badge='Perfect';kind='win';}
           return {name:h.name,cells,count:n+'/7',hasBadge:!!badge,badge,badgeBg:kind==='win'?'var(--acc)':'transparent',badgeFg:kind==='win'?'var(--onAcc)':'var(--miss)',badgeBorder:kind==='win'?'var(--acc)':'var(--miss)'};})});ws=addDays(ws,-7);}
-    const tabs=[['today','Today'],['trends','Trends'],['net','Networking'],['goals','Goals'],['weekly','Weekly Results']];
+    // Finances
+    const pal=FIN_PAL[light?'light':'dark'],ecMap={};d.expCats.forEach(c=>{ecMap[c.key]=c;});
+    const ecName=c=>c?(c.label.trim()||'Untitled'):'Uncategorized',ecColor=c=>c?pal[c.slot]:'#898781';
+    const exps=d.expenses.filter(e=>e.date<=T),sumIn=(a,b)=>exps.reduce((t,e)=>e.date>=a&&e.date<=b?t+e.amount:t,0);
+    const firstExp=exps.length?exps.reduce((m,e)=>e.date<m?e.date:m,T):T;
+    const pmS=parse(T.slice(0,8)+'01');pmS.setMonth(pmS.getMonth()-1);const pmLast=new Date(pmS.getFullYear(),pmS.getMonth()+1,0).getDate();
+    const PER={week:{label:'This week',name:'this week',spent:'SPENT THIS WEEK',a:cw,b:T,pa:addDays(cw,-7),pb:addDays(T,-7),prev:'this point last week'},
+      month:{label:'This month',name:'this month',spent:'SPENT THIS MONTH',a:T.slice(0,8)+'01',b:T,pa:toKey(pmS),pb:toKey(new Date(pmS.getFullYear(),pmS.getMonth(),Math.min(parse(T).getDate(),pmLast))),prev:'this point last month'},
+      '30d':{label:'Last 30 days',name:'the last 30 days',spent:'SPENT · LAST 30 DAYS',a:addDays(T,-29),b:T,pa:addDays(T,-59),pb:addDays(T,-30),prev:'the 30 days before'},
+      all:{label:'All time',name:'all time',spent:'SPENT · ALL TIME',a:firstExp,b:T}};
+    const P=PER[s.fPeriod]||PER.week,inP=exps.filter(e=>e.date>=P.a&&e.date<=P.b),total=inP.reduce((t,e)=>t+e.amount,0);
+    const nDays=Math.round((parse(P.b)-parse(P.a))/864e5)+1;
+    let finDelta='';if(P.pa){const pv=sumIn(P.pa,P.pb),df=total-pv;finDelta=!pv&&!total?'Nothing logged yet':!pv?'Nothing spent by '+P.prev:Math.abs(df)<0.005?'Same as '+P.prev:(df>0?'↑ ':'↓ ')+money(Math.abs(df))+(df>0?' more':' less')+' than '+P.prev;}else finDelta=exps.length?'Since '+fmtShort(firstExp):'Nothing logged yet';
+    const largest=inP.reduce((m,e)=>!m||e.amount>m.amount?e:m,null);
+    const byCat={};inP.forEach(e=>{const k=ecMap[e.cat]?e.cat:'';byCat[k]=byCat[k]||{amt:0,n:0};byCat[k].amt+=e.amount;byCat[k].n++;});
+    // fixed category order for the stacked bar so colors stay put; rows ranked by amount
+    const catOrder=[...d.expCats.map(c=>c.key),''].filter(k=>byCat[k]);
+    const mkSeg=k=>{const c=ecMap[k],v=byCat[k],sh=total?v.amt/total:0,hov=s.fHover,act=s.fCat;return {key:k,label:ecName(c),color:ecColor(c),grow:v.amt.toFixed(2),amtLabel:money(v.amt),pctLabel:Math.round(sh*100)+'%',countLabel:v.n+(v.n===1?' purchase':' purchases'),
+      title:ecName(c)+' · '+money(v.amt)+' · '+Math.round(sh*100)+'%',op:(hov!=null&&hov!==k)||(act!=null&&act!==k&&hov==null)?.35:1,rowBg:hov===k||act===k?'var(--rowOn)':'transparent',
+      onEnter:()=>this.setState({fHover:k}),onClick:()=>this.setState(st=>({fCat:st.fCat===k?null:k}))};};
+    const split=catOrder.map(mkSeg),ranked=[...split].sort((a,b)=>b.grow-a.grow);
+    const hovSeg=split.find(x=>x.key===s.fHover);
+    const splitReadout=hovSeg?hovSeg.label+' · '+hovSeg.amtLabel+' · '+hovSeg.pctLabel+' of '+money(total):ranked.length?ranked[0].label+' is your biggest category at '+ranked[0].pctLabel:'';
+    const fwE=weekStart(firstExp),WE=(()=>{let st=fwE;const latest=addDays(cw,-77);if(st<latest)st=latest;return Array.from({length:12},(_,i)=>addDays(st,7*i));})();
+    const wkTot=WE.map(ws=>ws>T?null:sumIn(ws,addDays(ws,6))),budget=d.finBudget>0?d.finBudget:null;
+    const wkMax=Math.max(1,...wkTot.filter(v=>v!=null),budget||0)*1.1;
+    const hw=s.fHoverWk!=null?s.fHoverWk:WE.indexOf(cw);
+    const wkBars=WE.map((ws,i)=>{const v=wkTot[i];return {h:v==null?'0%':v?Math.max(1.5,v/wkMax*100)+'%':'0%',bg:budget&&v>budget?'var(--miss)':'var(--acc)',op:s.fHoverWk!=null&&s.fHoverWk!==i?.45:1,
+      title:'Week of '+fmtShort(ws)+' · '+(v==null?'upcoming':money(v)),onEnter:()=>this.setState({fHoverWk:i})};});
+    const hv=wkTot[hw],hws=WE[hw];
+    const wkSpent=sumIn(cw,T),bLeft=budget?budget-wkSpent:0;
+    const eRowsAll=[...inP].filter(e=>s.fCat==null||(ecMap[e.cat]?e.cat:'')===s.fCat).sort((a,b)=>b.date.localeCompare(a.date)||b.ts-a.ts);
+    const expRows=eRowsAll.map(e=>{const c=ecMap[e.cat];return {id:e.id,item:e.item,dateLabel:fmtShort(e.date)+(e.date.slice(0,4)!==T.slice(0,4)?' '+e.date.slice(0,4):''),catLabel:ecName(c),color:ecColor(c),amtLabel:money(e.amount),
+      onDelete:()=>this.upd(dd=>({...dd,expenses:dd.expenses.filter(x=>x.id!==e.id)}))};});
+    const eCatRows=d.expCats.map(c=>{const n=d.expenses.filter(e=>e.cat===c.key).length;return {id:c.key,label:c.label,color:pal[c.slot],count:n?n+(n===1?' expense':' expenses'):'',onLabel:e=>this.updECat(c.key,{label:e.target.value}),onDelete:()=>this.delECat(c.key)};});
+    const fc=s.fCat!=null?(byCat[s.fCat]||s.fCat===''||ecMap[s.fCat]?s.fCat:null):null;
+    const tabs=[['today','Today'],['trends','Trends'],['net','Networking'],['fin','Finances'],['goals','Goals'],['weekly','Weekly Results']];
     return {
       themeVars:light?LIGHT:{},toggleTheme:()=>this.upd(dd=>({...dd,theme:dd.theme==='light'?'dark':'light',themeSet:true})),
       switchBg:light?'var(--ctlB)':'var(--acc)',knobLeft:light?'2px':'18px',knobBg:light?'var(--fg)':'var(--onAcc)',
       nav:tabs.map(([k,l])=>{const a=s.tab===k;return {label:l,bg:a?'var(--navOnBg)':'transparent',fg:a?'var(--navOnFg)':'var(--mute)',dot:a?'var(--navDot)':'transparent',weight:a?500:400,onClick:()=>this.setState({tab:k})};}),
-      isToday:s.tab==='today',isTrends:s.tab==='trends',isNet:s.tab==='net',isGoals:s.tab==='goals',isWeekly:s.tab==='weekly',
+      isToday:s.tab==='today',isTrends:s.tab==='trends',isNet:s.tab==='net',isFin:s.tab==='fin',isGoals:s.tab==='goals',isWeekly:s.tab==='weekly',
       consistency30:c30==null?'—':Math.round(c30*100),consistencyUnit:c30==null?'':'%',spark,
       dateLine:DAYL[vdD.getDay()]+', '+MONL[vdD.getMonth()]+' '+vdD.getDate()+' · Week '+isoWeek(vd),
       vdLabel:vd===T?'Today':vd===addDays(T,-1)?'Yesterday':DAYL[vdD.getDay()],notToday:vd!==T,nextOpacity:vd<T?1:.35,
@@ -514,6 +625,24 @@ class Component extends DCLogic {
       edText:ed.text||'',edTag:ed.tag||'',edPrio:ed.prio||'',edDue:ed.due||'',onEdText:e=>this.setEd({text:e.target.value}),onEdTag:e=>this.setEd({tag:e.target.value}),onEdPrio:e=>this.setEd({prio:e.target.value}),onEdDue:e=>this.setEd({due:e.target.value}),
       onEdKey:e=>{if(e.key==='Enter')this.saveEdit();if(e.key==='Escape')this.setState({editTask:null});},onEdSave:this.saveEdit,onEdCancel:()=>this.setState({editTask:null}),
       newText:s.newText,newTag:tagMap[s.newTag]?s.newTag:'',onNewText:e=>this.setState({newText:e.target.value}),onNewTag:e=>this.setState({newTag:e.target.value}),onNewKey:e=>{if(e.key==='Enter')this.addTask();},onAddTask:this.addTask,
+      finPeriods:Object.keys(PER).map(k=>{const a=(s.fPeriod||'week')===k;return {label:PER[k].label,bg:a?'var(--fg)':'transparent',fg:a?'var(--bg)':'var(--fg)',border:a?'var(--fg)':'var(--ctlB)',onClick:()=>this.setState({fPeriod:k,fCat:null,fHover:null})};}),
+      finRange:s.fPeriod==='all'?(exps.length?'Since '+fmtShort(firstExp):'Track what you spend'):fmtShort(P.a)+' – '+fmtShort(P.b),finPeriodName:P.name,
+      finSpentLabel:P.spent,finTotal:money(total),finDelta,finDaily:money(total/nDays),finDays:'Over '+nDays+(nDays===1?' day':' days'),finCount:inP.length,finLargest:largest?'Largest: '+money(largest.amount)+' · '+largest.item:'No purchases yet',
+      budgetRaw:d.finBudget==null?'':d.finBudget,onBudget:e=>{const v=parseFloat(e.target.value);this.upd(dd=>({...dd,finBudget:v>0?v:null}));},hasBudget:!!budget,noBudget:!budget,
+      budgetBig:budget?money(Math.abs(bLeft)):'',budgetFg:bLeft<0?'var(--miss)':'var(--fg)',budgetW:budget?Math.min(100,wkSpent/budget*100)+'%':'0%',budgetBar:bLeft<0?'var(--miss)':'var(--acc)',
+      budgetSub:budget?(bLeft<0?'Over budget · '+money(wkSpent)+' of '+money(budget)+' this week':'Left this week · '+money(wkSpent)+' of '+money(budget)+' spent'):'',
+      budgetPos:budget?(budget/wkMax*100)+'%':'0',wkBudgetLabel:budget?'– – '+money(budget)+' budget':'',
+      eItem:s.eItem,eAmt:s.eAmt,eCat:ecMap[s.eCat]?s.eCat:'',eDate:s.eDate,eMsg:s.eMsg,expCatOptions:[...d.expCats.map(c=>({key:c.key,label:ecName(c)})),{key:'',label:'Uncategorized'}],
+      onEItem:e=>this.setState({eItem:e.target.value,eMsg:''}),onEAmt:e=>this.setState({eAmt:e.target.value,eMsg:''}),onECat:e=>this.setState({eCat:e.target.value}),onEDate:e=>this.setState({eDate:e.target.value}),
+      onEKey:e=>{if(e.key==='Enter')this.addExpense();},onAddExpense:this.addExpense,
+      split,ranked,hasSplit:split.length>0,noSplit:split.length===0,splitReadout,onSplitLeave:()=>this.setState({fHover:null}),
+      eCatEdit:s.eCatEdit,eCatEditLabel:s.eCatEdit?'Done':'✎ Categories',toggleECatEdit:()=>this.setState(st=>({eCatEdit:!st.eCatEdit})),eCatRows,canAddECat:d.expCats.length<8,eCatFull:d.expCats.length>=8,
+      newECat:s.newECat,onNewECat:e=>this.setState({newECat:e.target.value}),onNewECatKey:e=>{if(e.key==='Enter')this.addECat();},onAddECat:this.addECat,
+      wkBars,onWkLeave:()=>this.setState({fHoverWk:null}),wkSub:'12 weeks from '+fmtShort(WE[0]),wkReadVal:hv==null?'—':money(hv),wkReadLabel:hws===cw?'This week':'Week of '+fmtShort(hws),
+      wkAxisStart:fmtShort(WE[0]),wkAxisEnd:WE[11]===cw?'This week':fmtShort(WE[11]),
+      expRows:split.length||expRows.length?expRows:[],expEmpty:expRows.length===0,expEmptyText:exps.length?'No expenses in this view.':'No expenses yet. Add your first one above.',
+      expCountLabel:expRows.length+(expRows.length===1?' purchase':' purchases')+' · '+money(eRowsAll.reduce((t,e)=>t+e.amount,0)),
+      hasExpFilter:fc!=null,expFilterLabel:fc!=null?ecName(ecMap[fc]):'',expFilterColor:fc!=null?ecColor(ecMap[fc]):'',clearExpFilter:()=>this.setState({fCat:null}),
       board,charts,trendsSub:hasData?'Since '+fmtShort(first)+(parse(first).getFullYear()!==parse(T).getFullYear()?' '+parse(first).getFullYear():''):'Start logging to see trends',weekAxisStart:fmtShort(W[0]),weekAxisEnd:axisEnd(W[11]),consistBars,consistAxisStart:fmtShort(W26[0]),consistAxisEnd:axisEnd(W26[25]),thisWeekScore:wkScores[cwi]==null?'—':pct(wkScores[cwi]),bestWeek:best<0?'—':pct(best),heat,heatMonths,
       netTotal:d.contacts.length,netChatted:chatted,netWeek:d.contacts.filter(c=>callOf(c)>=weekStart(T)).length,netStreak:curStreak('net',T),
       cName:s.cName,cCo:s.cCo,cDate:s.cDate,cStatus:s.cStatus,cNotes:s.cNotes,cSearch:s.cSearch,
